@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * Banners management 
+ *
+ * @category   LCB
+ * @package    LCB_Slides
+ * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
+ * 
+ * @var $this LCB_Slides_Block_Widget
+ */
+
+$collection = Mage::getModel('catalog/product')->getCollection();
+$collection->setPageSize($this->getLimit())->setCurPage(1);
+$i = 0;
+
+foreach ($collection as $_product):
+    $product = Mage::getModel('catalog/product')->load($_product->getId());
+    $style = '';
+    if ($i++ > 0) {
+        $style = "display: none";
+    }
+    ?>
+<a href="<?php echo $product->getProductUrl(); ?>">
+    <img style="<?php echo $style; ?>" src="<?php echo Mage::helper('catalog/image')->init($product, 'small_image')->resize(354, 130); ?>" alt="<?php echo $product->getName(); ?>">
+</a>
+<?php endforeach; ?>

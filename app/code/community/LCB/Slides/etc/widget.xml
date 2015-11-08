@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<widgets>    
+    <slides_widget type="slides/widget" translate="name description" module="slides">
+        <name>LCB Slides</name>
+        <description type="desc">Slides widget</description>
+        <parameters>
+            <limit>
+                <label>Limit</label>
+                <visible>1</visible>
+                <required>1</required>
+                <type>text</type>
+                <value>10</value>
+            </limit>
+            <template>
+                <label>Template</label>
+                <visible>1</visible>
+                <required>1</required>
+                <type>text</type>
+                <value>lcb/slides/widget.phtml</value>
+            </template>
+        </parameters>
+    </slides_widget>
+</widgets>
