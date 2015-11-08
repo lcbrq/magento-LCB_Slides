@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <slides_adminhtml_slides_index>
+        <reference name="content">
+            <block type="slides/adminhtml_slides" name="slides" />
+        </reference>
+    </slides_adminhtml_slides_index>
+    <slides_adminhtml_areas_index>
+        <reference name="content">
+            <block type="slides/adminhtml_areas" name="areas" />
+        </reference>
+    </slides_adminhtml_areas_index>
+</layout>

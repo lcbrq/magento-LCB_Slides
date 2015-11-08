@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <LCB_Slides>
+            <version>1.0.0</version>
+        </LCB_Slides>
+    </modules>
+    <frontend>
+        <routers>
+            <slides>
+                <use>standard</use>
+                <args>
+                    <module>LCB_Slides</module>
+                    <frontName>slides</frontName>
+                </args>
+            </slides>
+        </routers>
+        <layout>
+            <updates>
+                <slides>
+                    <file>lcb_slides.xml</file>
+                </slides>
+            </updates>
+        </layout>
+    </frontend>
+    <global>
+        <helpers>
+            <slides>
+                <class>LCB_Slides_Helper</class>
+            </slides>
+        </helpers>
+        <blocks>
+            <slides>
+                <class>LCB_Slides_Block</class>
+            </slides>
+        </blocks>
+        <models>
+            <slides>
+                <class>LCB_Slides_Model</class>
+                <resourceModel>slides_mysql4</resourceModel>
+            </slides>
+            <slides_mysql4>
+                <class>LCB_Slides_Model_Mysql4</class>
+                <entities>		  
+                    <slides>
+                        <table>lcb_slides</table>
+                    </slides>		  
+                    <areas>
+                        <table>lcb_areas</table>
+                    </areas>
+                </entities>
+            </slides_mysql4>
+        </models>
+        <resources>
+            <slides_setup>
+                <setup>
+                    <module>LCB_Slides</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </slides_setup>
+            <slides_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </slides_write>
+            <slides_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </slides_read>
+        </resources>
+    </global>
+    <admin>
+        <routers>
+            <slides>
+                <use>admin</use>
+                <args>
+                    <module>LCB_Slides</module>
+                    <frontName>admin_slides</frontName>
+                </args>
+            </slides>
+        </routers>
+    </admin>
+    <adminhtml>
+        <menu>
+            <cms>
+                <children>
+                    <slides module="slides">
+                        <title>Slides</title>
+                        <sort_order>100</sort_order>
+                        <children>
+                            <slides module="slides">
+                                <title>Manage Slides</title>
+                                <sort_order>0</sort_order>
+                                <action>admin_slides/adminhtml_slides</action>
+                            </slides>
+                            <areas module="slides">
+                                <title>Manage Areas</title>
+                                <sort_order>10</sort_order>
+                                <action>admin_slides/adminhtml_areas</action>
+                            </areas>
+                        </children>
+                    </slides>
+                </children>
+            </cms>
+        </menu>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <slides translate="title" module="slides">
+                            <title>Slides</title>
+                            <sort_order>1000</sort_order>
+                            <children>
+                                <slides translate="title">
+                                    <title>Manage Slides</title>
+                                    <sort_order>0</sort_order>
+                                </slides>
+                                <areas translate="title">
+                                    <title>Manage Areas</title>
+                                    <sort_order>10</sort_order>
+                                </areas>
+                            </children>
+                        </slides>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <slides>
+                    <file>lcb_slides.xml</file>
+                </slides>
+            </updates>
+        </layout>
+    </adminhtml>
+</config>
