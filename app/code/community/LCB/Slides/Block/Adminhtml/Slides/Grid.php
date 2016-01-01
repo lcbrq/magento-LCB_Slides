@@ -20,7 +20,19 @@ class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget
 
     protected function _prepareCollection()
     {
+
         $collection = Mage::getModel("slides/slides")->getCollection();
+        
+        switch (Mage::app()->getRequest()->getControllerName()) {
+            case 'catalog_category':
+                $collection->getSelect()->join( array('slides_category'=>  Mage::getSingleton('core/resource')->getTableName('slides/category')), 'slides_category.slide_id = main_table.id', array('slides_category.category_id'));
+                $collection->addFieldToFilter('type', LCB_Slides_Model_Mysql4_Slides::TYPE_CATEGORY);
+                $collection->addFieldToFilter('category_id', $this->getRequest()->getParam('id'));
+                break;
+            default:
+                $collection->addFieldToFilter('type', LCB_Slides_Model_Mysql4_Slides::TYPE_GENERAL);
+                break;
+        }
         $this->setCollection($collection);
         parent::_prepareCollection();
         foreach ($collection as $slide) {
@@ -83,19 +95,26 @@ class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget
 
     public function getRowUrl($row)
     {
-        return $this->getUrl("*/*/edit", array("id" => $row->getId()));
+        if ($this->getRequest()->getParam('id')) {
+            $categoryId = $this->getRequest()->getParam('id');
+            return $this->getUrl("admin_slides/adminhtml_slides/edit", array("id" => $row->getId(), "category" => $categoryId));
+        } else {
+            return $this->getUrl("*/*/edit", array("id" => $row->getId()));
+        }
     }
 
     protected function _prepareMassaction()
     {
-        $this->setMassactionIdField('id');
-        $this->getMassactionBlock()->setFormFieldName('ids');
-        $this->getMassactionBlock()->setUseSelectAll(true);
-        $this->getMassactionBlock()->addItem('remove_slides', array(
-            'label' => Mage::helper('slides')->__('Remove Slides'),
-            'url' => $this->getUrl('*/adminhtml_slides/massRemove'),
-            'confirm' => Mage::helper('slides')->__('Are you sure?')
-        ));
+        if (!$this->getRequest()->getParam('id')) {
+            $this->setMassactionIdField('id');
+            $this->getMassactionBlock()->setFormFieldName('ids');
+            $this->getMassactionBlock()->setUseSelectAll(true);
+            $this->getMassactionBlock()->addItem('remove_slides', array(
+                'label' => Mage::helper('slides')->__('Remove Slides'),
+                'url' => $this->getUrl('*/adminhtml_slides/massRemove'),
+                'confirm' => Mage::helper('slides')->__('Are you sure?')
+            ));
+        }
         return $this;
     }
 

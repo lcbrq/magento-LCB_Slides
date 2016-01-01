@@ -71,6 +71,14 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
         } elseif (Mage::registry("slides_data")) {
             $form->setValues(Mage::registry("slides_data")->getData());
         }
+        
+        if ($this->getRequest()->getParam('category')) {
+            $fieldset->addField("category", "hidden", array(
+                "name" => "category",
+                "value" => $this->getRequest()->getParam('category')
+            ));
+        }
+        
         return parent::_prepareForm();
     }
 

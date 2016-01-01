@@ -18,4 +18,14 @@ class LCB_Slides_Block_Adminhtml_Slides extends Mage_Adminhtml_Block_Widget_Grid
         parent::__construct();
     }
 
+    public function getCreateUrl()
+    {
+        if ($this->getRequest()->getParam('id')) {
+            $categoryId = $this->getRequest()->getParam('id');
+            return $this->getUrl("admin_slides/adminhtml_slides/new/category/$categoryId");
+        } else {
+            return parent::getCreateUrl();
+        }
+    }
+
 }

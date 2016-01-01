@@ -96,12 +96,18 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                     }
                     unset($post_data['stores']);
                 }
+                
+                if ($post_data['category']) {
+                    $post_data['type'] = LCB_Slides_Model_Mysql4_Slides::TYPE_CATEGORY;
+                } else {
+                    $post_data['type'] = LCB_Slides_Model_Mysql4_Slides::TYPE_GENERAL;
+                }
+
 
                 //save image
                 try {
 
                     if ((bool) $post_data['image']['delete'] == 1) {
-
                         $post_data['image'] = '';
                     } else {
 
@@ -146,6 +152,13 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
 
                 Mage::getSingleton("adminhtml/session")->addSuccess(Mage::helper("adminhtml")->__("Slide was successfully saved"));
                 Mage::getSingleton("adminhtml/session")->setSlidesData(false);
+                
+                if ($post_data['category']) {
+                    $category = Mage::getModel('slides/category')->load($this->getRequest()->getParam("id"), 'slide_id');
+                    $category->setCategoryId($post_data['category']);
+                    $category->setSlideId($model->getId());
+                    $category->save();
+                }
 
                 if ($this->getRequest()->getParam("back")) {
                     $this->_redirect("*/*/edit", array("id" => $model->getId()));

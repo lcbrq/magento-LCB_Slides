@@ -2,7 +2,7 @@
 <config>
     <modules>
         <LCB_Slides>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
         </LCB_Slides>
     </modules>
     <frontend>
@@ -44,32 +44,45 @@
                 <entities>		  
                     <slides>
                         <table>lcb_slides</table>
-                    </slides>		  
+                    </slides>
+                    <category>
+                        <table>lcb_slides_category</table>
+                    </category>
                     <areas>
                         <table>lcb_areas</table>
                     </areas>
                 </entities>
             </slides_mysql4>
         </models>
+        <events>
+            <adminhtml_catalog_category_tabs>
+                <observers>
+                    <lcb_slides_category_tabs_observer>
+                        <class>slides/observer</class>
+                        <method>addCategoryTab</method>
+                    </lcb_slides_category_tabs_observer>
+                </observers>
+            </adminhtml_catalog_category_tabs>
+        </events>
         <resources>
-            <slides_setup>
+            <lcb_slides_setup>
                 <setup>
                     <module>LCB_Slides</module>
                 </setup>
                 <connection>
                     <use>core_setup</use>
                 </connection>
-            </slides_setup>
-            <slides_write>
+            </lcb_slides_setup>
+            <lcb_slides_write>
                 <connection>
                     <use>core_write</use>
                 </connection>
-            </slides_write>
-            <slides_read>
+            </lcb_slides_write>
+            <lcb_slides_read>
                 <connection>
                     <use>core_read</use>
                 </connection>
-            </slides_read>
+            </lcb_slides_read>
         </resources>
     </global>
     <admin>
