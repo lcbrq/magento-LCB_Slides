@@ -26,9 +26,9 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
             "name" => "text",
         ));
 
-        $fieldset->addField("link", "text", array(
+        $fieldset->addField("url", "text", array(
             "label" => Mage::helper("slides")->__("Link"),
-            "name" => "link",
+            "name" => "url",
         ));
 
         $fieldset->addField('image', 'image', array(

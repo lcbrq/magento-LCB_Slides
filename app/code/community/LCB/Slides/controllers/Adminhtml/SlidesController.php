@@ -126,7 +126,7 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                                 }
                                 $path = Mage::getBaseDir('media') . DS . 'slides' . DS;
                                 $uploader = new Varien_File_Uploader('image');
-                                $uploader->setAllowedExtensions(array('jpg', 'png', 'gif'));
+                                $uploader->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
                                 $uploader->setAllowRenameFiles(false);
                                 $uploader->setFilesDispersion(false);
                                 $destFile = $path . $_FILES['image']['name'];

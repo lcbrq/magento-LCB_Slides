@@ -14,7 +14,7 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
         $this->_init("slides/slides");
     }
 
-    public function getUrl()
+    public function getImageUrl()
     {
         return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $this->getImage();
     }

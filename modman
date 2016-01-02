@@ -1,0 +1,4 @@
+app/code/community/LCB/Slides                              app/code/community/LCB/Slides
+app/design/adminhtml/default/default/layout/lcb_slides.xml app/design/adminhtml/default/default/layout/lcb_slides.xml
+app/design/frontend/base/default/template/lcb/slides       app/design/frontend/base/default/template/lcb/slides
+app/etc/modules/LCB_Slides.xml                             app/etc/modules/LCB_Slides.xml
