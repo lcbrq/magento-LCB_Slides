@@ -42,13 +42,15 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
             $areas[$area['id']] = $area['name'];
         }
 
-        $fieldset->addField("area", "select", array(
-            "label" => Mage::helper("slides")->__("Area"),
-            "name" => "area",
-            'value' => '4',
-            'values' => $areas,
-            'after_element_html' => '<small>Assign slide to </small>',
-        ));
+        if (!$this->getRequest()->getParam('category')) {
+            $fieldset->addField("area", "select", array(
+                "label" => Mage::helper("slides")->__("Area"),
+                "name" => "area",
+                'value' => '4',
+                'values' => $areas,
+                'after_element_html' => '<small>Assign slide to </small>',
+            ));
+        }
 
         if (!Mage::app()->isSingleStoreMode()) {
             $fieldset->addField('store_id', 'multiselect', array(
@@ -71,14 +73,19 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
         } elseif (Mage::registry("slides_data")) {
             $form->setValues(Mage::registry("slides_data")->getData());
         }
-        
+
         if ($this->getRequest()->getParam('category')) {
             $fieldset->addField("category", "hidden", array(
-                "name" => "category",
+                "name" => "category_id",
                 "value" => $this->getRequest()->getParam('category')
             ));
+        } else {
+             $fieldset->addField("category", "hidden", array(
+                "name" => "category_id",
+                "value" => Mage::getModel('slides/category')->load($this->getRequest()->getParam('id'), 'slide_id')->getCategoryId()
+            ));
         }
-        
+
         return parent::_prepareForm();
     }
 

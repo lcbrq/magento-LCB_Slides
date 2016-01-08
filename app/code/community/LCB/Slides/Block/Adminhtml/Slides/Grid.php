@@ -25,7 +25,7 @@ class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget
         
         switch (Mage::app()->getRequest()->getControllerName()) {
             case 'catalog_category':
-                $collection->getSelect()->join( array('slides_category'=>  Mage::getSingleton('core/resource')->getTableName('slides/category')), 'slides_category.slide_id = main_table.id', array('slides_category.category_id'));
+                $collection->getSelect()->join( array('slides_category'=>  Mage::getSingleton('core/resource')->getTableName('slides/category')), 'slides_category.slide_id = main_table.id', array('category_id'));
                 $collection->addFieldToFilter('type', LCB_Slides_Model_Mysql4_Slides::TYPE_CATEGORY);
                 $collection->addFieldToFilter('category_id', $this->getRequest()->getParam('id'));
                 break;

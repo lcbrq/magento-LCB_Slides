@@ -96,8 +96,8 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                     }
                     unset($post_data['stores']);
                 }
-                
-                if ($post_data['category']) {
+
+                if ($post_data['category_id']) {
                     $post_data['type'] = LCB_Slides_Model_Mysql4_Slides::TYPE_CATEGORY;
                 } else {
                     $post_data['type'] = LCB_Slides_Model_Mysql4_Slides::TYPE_GENERAL;
@@ -152,10 +152,10 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
 
                 Mage::getSingleton("adminhtml/session")->addSuccess(Mage::helper("adminhtml")->__("Slide was successfully saved"));
                 Mage::getSingleton("adminhtml/session")->setSlidesData(false);
-                
-                if ($post_data['category']) {
+
+                if ($post_data['category_id']) {
                     $category = Mage::getModel('slides/category')->load($this->getRequest()->getParam("id"), 'slide_id');
-                    $category->setCategoryId($post_data['category']);
+                    $category->setCategoryId($post_data['category_id']);
                     $category->setSlideId($model->getId());
                     $category->save();
                 }
@@ -164,7 +164,13 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                     $this->_redirect("*/*/edit", array("id" => $model->getId()));
                     return;
                 }
-                $this->_redirect("*/*/");
+
+                if ($post_data['category_id']) {
+                    $this->_redirect("adminhtml/catalog_category/");
+                } else {
+                    $this->_redirect("*/*/");
+                }
+
                 return;
             } catch (Exception $e) {
                 Mage::getSingleton("adminhtml/session")->addError($e->getMessage());
@@ -181,9 +187,16 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
         if ($this->getRequest()->getParam("id") > 0) {
             try {
                 $model = Mage::getModel("slides/slides");
-                $model->setId($this->getRequest()->getParam("id"))->delete();
+                $id = $this->getRequest()->getParam("id");
+                $model->load($id);
+                $category = $model->getType() == LCB_Slides_Model_Mysql4_Slides::TYPE_CATEGORY;
+                $model->delete();
                 Mage::getSingleton("adminhtml/session")->addSuccess(Mage::helper("adminhtml")->__("Item was successfully deleted"));
-                $this->_redirect("*/*/");
+                if ($model) {
+                    return $this->getUrl("adminhtml/catalog_category/");
+                } else {
+                    return $this->_redirect("*/*/");
+                }
             } catch (Exception $e) {
                 Mage::getSingleton("adminhtml/session")->addError($e->getMessage());
                 $this->_redirect("*/*/edit", array("id" => $this->getRequest()->getParam("id")));

@@ -45,4 +45,18 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit extends Mage_Adminhtml_Block_Widget
         }
     }
 
+    /**
+     * Get URL for back (reset) button
+     *
+     * @return string
+     */
+    public function getBackUrl()
+    {
+        if ($this->getRequest()->getParam('category')) {
+            return $this->getUrl("adminhtml/catalog_category/");
+        } else {
+            return $this->getUrl('*/*/');
+        }
+    }
+
 }
