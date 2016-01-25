@@ -151,5 +151,14 @@
                 </slides>
             </updates>
         </layout>
+        <translate>
+            <modules>
+                <slides>
+                    <files>
+                        <default>LCB_Slides.csv</default>
+                    </files>
+                </slides>
+            </modules>
+        </translate>
     </adminhtml>
 </config>

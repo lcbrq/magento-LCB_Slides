@@ -48,7 +48,7 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
                 "name" => "area",
                 'value' => '4',
                 'values' => $areas,
-                'after_element_html' => '<small>Assign slide to </small>',
+                'after_element_html' => '<small>' . $this->__("Slide assignment") . '</small>',
             ));
         }
 
