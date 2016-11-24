@@ -16,6 +16,12 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
         $this->setForm($form);
         $fieldset = $form->addFieldset("slides_form", array("legend" => Mage::helper("slides")->__("Item information")));
 
+        $fieldset->addField('enabled', 'select', array(
+            'label' => Mage::helper('slides')->__('Enable'),
+            'values' => Mage::getSingleton('adminhtml/system_config_source_yesno')->toArray(),
+            'name' => 'enabled'
+        ));
+        
         $fieldset->addField("name", "text", array(
             "label" => Mage::helper("slides")->__("Name"),
             "name" => "name",
@@ -31,10 +37,22 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
             "name" => "url",
         ));
 
+        $fieldset->addField('target', 'select', array(
+            'label' => Mage::helper('slides')->__('Open in'),
+            'values' => Mage::getModel('slides/slides')->getTargetOptions(),
+            'name' => 'target'
+        ));
+
         $fieldset->addField('image', 'image', array(
             'label' => Mage::helper('slides')->__('Image'),
             'name' => 'image',
             'note' => '(*.jpg, *.png, *.gif)',
+        ));
+
+        $fieldset->addField('position', 'text', array(
+            'label' => Mage::helper('slides')->__('Position'),
+            'name' => 'position',
+            'class' => 'validate-digits'
         ));
 
         $data = Mage::getModel('slides/areas')->getCollection()->getData();
@@ -80,7 +98,7 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
                 "value" => $this->getRequest()->getParam('category')
             ));
         } else {
-             $fieldset->addField("category", "hidden", array(
+            $fieldset->addField("category", "hidden", array(
                 "name" => "category_id",
                 "value" => Mage::getModel('slides/category')->load($this->getRequest()->getParam('id'), 'slide_id')->getCategoryId()
             ));

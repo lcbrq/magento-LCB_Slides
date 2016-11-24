@@ -22,7 +22,7 @@ class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget
     {
 
         $collection = Mage::getModel("slides/slides")->getCollection();
-        
+       
         switch (Mage::app()->getRequest()->getControllerName()) {
             case 'catalog_category':
                 $collection->getSelect()->join( array('slides_category'=>  Mage::getSingleton('core/resource')->getTableName('slides/category')), 'slides_category.slide_id = main_table.id', array('category_id'));
@@ -48,31 +48,44 @@ class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget
     protected function _prepareColumns()
     {
         $this->addColumn("id", array(
-            "header" => Mage::helper("slides")->__("ID"),
-            "align" => "right",
-            "width" => "50px",
-            "type" => "number",
-            "index" => "id",
+            'header' => Mage::helper("slides")->__("ID"),
+            'align' => "right",
+            'width' => "50px",
+            'type' => "number",
+            'index' => "id",
         ));
 
         $this->addColumn("name", array(
-            "header" => Mage::helper("slides")->__("Name"),
-            "index" => "name",
+            'header' => Mage::helper("slides")->__("Name"),
+            'index" => "name',
         ));
 
         $this->addColumn("image", array(
-            "header" => Mage::helper("slides")->__("Image"),
-            "index" => "image",
+            'header' => Mage::helper("slides")->__("Image"),
+            'index' => 'image',
             'renderer' => 'LCB_Slides_Block_Adminhtml_Slides_Render_Image',
-            'filter' => false
+            'filter' => false,
+            'width' => '250px'
         ));
 
         $this->addColumn("area", array(
-            "header" => Mage::helper("slides")->__("Area"),
-            "index" => "area",
-            'renderer' => 'LCB_Slides_Block_Adminhtml_Slides_Render_Area',
-            'filter' => false
+            'header' => Mage::helper("slides")->__("Area"),
+            'type' => 'options',
+            'index' => 'area',
+            'options'=> Mage::getModel('slides/areas')->toOptionArray()
         ));
+        
+        $this->addColumn("position", array(
+            'header' => Mage::helper("slides")->__("Position"),
+            'index' => "position",
+        ));
+        
+        $this->addColumn("enabled", array(
+            "header" => Mage::helper("slides")->__("Enable"),
+            'type' => 'options',
+            'index' => "enabled",
+            'options'   => Mage::getSingleton('adminhtml/system_config_source_yesno')->toArray(),
+        ));        
 
         if (!Mage::app()->isSingleStoreMode()) {
             $this->addColumn('store_id', array(

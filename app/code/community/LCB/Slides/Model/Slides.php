@@ -9,6 +9,9 @@
  */
 class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
 
+    const TARGET_SELF = 0;
+    const TARGET_NEW_WINDOW = 1;
+
     protected function _construct()
     {
         $this->_init("slides/slides");
@@ -17,6 +20,49 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
     public function getImageUrl()
     {
         return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $this->getImage();
+    }
+
+    public function getTarget()
+    {
+        $target = "";
+
+        switch (parent::getTarget()) {
+            case self::TARGET_SELF:
+                $target = "_self";
+                break;
+            case self::TARGET_NEW_WINDOW:
+                $target = "_blank";
+                break;
+            default:
+                break;
+        }
+
+        return $target;
+    }
+
+    public function getTargetOptions()
+    {
+        return array(
+            array('value' => self::TARGET_SELF, 'label' => Mage::helper('slides')->__("Same window")),
+            array('value' => self::TARGET_NEW_WINDOW, 'label' => Mage::helper('slides')->__("New window"))
+        );
+    }
+
+    /**
+     * Get ordered slides for target area
+     * 
+     * @param string area name
+     * @return LCB_Slides_Model_Mysql4_Slides_Collection
+     */
+    public function getAreaSlides($area)
+    {
+        $area = Mage::getModel('slides/areas')->load($area, 'name');
+        $slides = Mage::getModel('slides/slides')
+                ->getCollection()
+                ->addFieldToFilter('area', $area->getId())
+                ->addFieldToFilter('enabled', 1)
+                ->setOrder('position', 'ASC');
+        return $slides;
     }
 
 }

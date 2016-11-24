@@ -14,3 +14,7 @@ Magento slides management with category support
 ### 1.1.1
 
 * Added translations
+
+### 1.2.0
+
+* Added position and target window management for slides
