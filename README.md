@@ -18,3 +18,7 @@ Magento slides management with category support
 ### 1.2.0
 
 * Added position and target window management for slides
+
+### 1.3.0
+
+* Added options model, configurable slide transition time

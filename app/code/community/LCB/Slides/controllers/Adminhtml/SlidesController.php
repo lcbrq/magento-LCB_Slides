@@ -103,8 +103,6 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                     $post_data['type'] = LCB_Slides_Model_Mysql4_Slides::TYPE_GENERAL;
                 }
 
-
-                //save image
                 try {
 
                     if ((bool) $post_data['image']['delete'] == 1) {
@@ -142,9 +140,9 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                     $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
                     return;
                 }
-//save image
 
-
+                $post_data['options'] = json_encode($post_data['options']);
+                
                 $model = Mage::getModel("slides/slides")
                         ->addData($post_data)
                         ->setId($this->getRequest()->getParam("id"))

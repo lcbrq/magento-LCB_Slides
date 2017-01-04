@@ -11,6 +11,8 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
 
     const TARGET_SELF = 0;
     const TARGET_NEW_WINDOW = 1;
+    
+    const DEFAULT_TRANSITION_TIME = 2000;
 
     protected function _construct()
     {
@@ -63,6 +65,20 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
                 ->addFieldToFilter('enabled', 1)
                 ->setOrder('position', 'ASC');
         return $slides;
+    }
+    
+    /**
+     * Get json encoded additional slide options as array
+     * 
+     * @return array
+     */
+    public function getOptions()
+    {
+        $options = json_decode($this->getData('options'), true);
+        if (!isset($options['transition_time']) || !$options['transition_time']) {
+            $options['transition_time'] = self::DEFAULT_TRANSITION_TIME;
+        }
+        return $options;
     }
 
 }

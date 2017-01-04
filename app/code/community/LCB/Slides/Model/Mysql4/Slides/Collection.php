@@ -14,6 +14,12 @@ class LCB_Slides_Model_Mysql4_Slides_Collection extends Mage_Core_Model_Mysql4_C
         $this->_init("slides/slides");
     }
 
+    /**
+     * Filter collection by store id
+     * 
+     * @param int $id
+     * @return $filter
+     */
     public function addStoreFilter($id)
     {
 
@@ -23,6 +29,22 @@ class LCB_Slides_Model_Mysql4_Slides_Collection extends Mage_Core_Model_Mysql4_C
         ));
 
         return $filter;
+    }
+    
+    /**
+     * Get slide options by key
+     * 
+     * @param string $key
+     * @return array
+     */
+    public function getOptionsByKey($key)
+    {
+        $options = array();
+        foreach ($this as $slide) {
+            $data = $slide->getOptions();
+            $options[$slide->getId()] = $data[$key];
+        }
+        return $options;
     }
 
 }

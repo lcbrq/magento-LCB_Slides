@@ -14,7 +14,7 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
 
         $form = new Varien_Data_Form();
         $this->setForm($form);
-        $fieldset = $form->addFieldset("slides_form", array("legend" => Mage::helper("slides")->__("Item information")));
+        $fieldset = $form->addFieldset("slide_setting", array("legend" => Mage::helper("slides")->__("Primary settings")));
 
         $fieldset->addField('enabled', 'select', array(
             'label' => Mage::helper('slides')->__('Enable'),
