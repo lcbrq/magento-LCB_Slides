@@ -3,7 +3,7 @@ Magento slides management with category support
  
 ### Version
 
-1.1.1
+1.3.1
 
 ### Changelog
 
