@@ -22,3 +22,7 @@ Magento slides management with category support
 ### 1.3.0
 
 * Added options model, configurable slide transition time
+
+### 1.3.1
+
+* Fixed slide name on admin grid and made use of name in layout for sample block area

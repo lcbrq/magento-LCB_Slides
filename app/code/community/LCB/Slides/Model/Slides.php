@@ -19,11 +19,29 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
         $this->_init("slides/slides");
     }
 
+    /**
+     * Get full image url
+     * 
+     * @return string
+     */
     public function getImageUrl()
     {
         return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $this->getImage();
     }
+    
+    /**
+     * Alias for getText() adjusted with template filter
+     */
+    public function getContent(){
+        $text = $this->getText();
+        return Mage::getSingleton('widget/template_filter')->filter($text);
+    }
 
+    /**
+     * Get slide url open in self or new window
+     * 
+     * @return string
+     */
     public function getTarget()
     {
         $target = "";

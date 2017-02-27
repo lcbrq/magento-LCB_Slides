@@ -57,7 +57,7 @@ class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget
 
         $this->addColumn("name", array(
             'header' => Mage::helper("slides")->__("Name"),
-            'index" => "name',
+            'index' => 'name',
         ));
 
         $this->addColumn("image", array(
