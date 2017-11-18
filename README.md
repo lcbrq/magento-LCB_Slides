@@ -26,3 +26,7 @@ Magento slides management with category support
 ### 1.3.1
 
 * Fixed slide name on admin grid and made use of name in layout for sample block area
+
+### 1.3.2
+
+* Remove obsolete frontend controller and `getAreaSlides` method to helper
