@@ -26,6 +26,11 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
      */
     public function getImageUrl()
     {
+
+        if ($this->getImageMobile() && Mage::helper('slides')->getIsMobileDevice()) {
+            return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $this->getImageMobile();
+        }
+
         return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $this->getImage();
     }
     

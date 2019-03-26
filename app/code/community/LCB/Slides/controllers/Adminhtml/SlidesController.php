@@ -141,6 +141,44 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                     return;
                 }
 
+                try {
+
+                    if ((bool) $post_data['image_mobile']['delete'] == 1) {
+                        $post_data['image_mobile'] = '';
+                    } else {
+
+                        unset($post_data['image_mobile']);
+
+                        if (isset($_FILES)) {
+
+                            if ($_FILES['image_mobile']['name']) {
+
+                                if ($this->getRequest()->getParam("id")) {
+                                    $model = Mage::getModel("slides/slides")->load($this->getRequest()->getParam("id"));
+                                    if ($model->getData('image_mobile')) {
+                                        $io = new Varien_Io_File();
+                                        $io->rm(Mage::getBaseDir('media') . DS . implode(DS, explode('/', $model->getData('image'))));
+                                    }
+                                }
+                                $path = Mage::getBaseDir('media') . DS . 'slides' . DS . 'mobile' . DS;
+                                $uploader = new Varien_File_Uploader('image_mobile');
+                                $uploader->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
+                                $uploader->setAllowRenameFiles(false);
+                                $uploader->setFilesDispersion(false);
+                                $destFile = $path . $_FILES['image_mobile']['name'];
+                                $filename = $uploader->getNewFileName($destFile);
+                                $uploader->save($path, $filename);
+
+                                $post_data['image_mobile'] = 'slides/mobile/' . $filename;
+                            }
+                        }
+                    }
+                } catch (Exception $e) {
+                    Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                    $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+                    return;
+                }
+
                 $post_data['options'] = json_encode($post_data['options']);
                 
                 $model = Mage::getModel("slides/slides")
