@@ -15,6 +15,11 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
         return $this;
     }
 
+    protected function _isAllowed()
+    {
+        return true;
+    }
+
     public function indexAction()
     {
         $this->_title($this->__("Slides"));
@@ -127,7 +132,7 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                                 $uploader->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
                                 $uploader->setAllowRenameFiles(false);
                                 $uploader->setFilesDispersion(false);
-                                $destFile = $path . $_FILES['image']['name'];
+                                $destFile = $path . preg_replace('/[^a-zA-Z0-9-_\.]/','', $_FILES['image']['name']);
                                 $filename = $uploader->getNewFileName($destFile);
                                 $uploader->save($path, $filename);
 
@@ -180,7 +185,7 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                 }
 
                 $post_data['options'] = json_encode($post_data['options']);
-                
+
                 $model = Mage::getModel("slides/slides")
                         ->addData($post_data)
                         ->setId($this->getRequest()->getParam("id"))
@@ -254,6 +259,15 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
             Mage::getSingleton("adminhtml/session")->addError($e->getMessage());
         }
         $this->_redirect('*/*/');
+    }
+
+    /**
+     * @return void
+     */
+    public function productTabAction()
+    {
+        $this->loadLayout();
+        $this->renderLayout();
     }
 
     /**

@@ -2,7 +2,7 @@
 <config>
     <modules>
         <LCB_Slides>
-            <version>1.3.3</version>
+            <version>1.4.0</version>
         </LCB_Slides>
     </modules>
     <frontend>
@@ -48,22 +48,15 @@
                     <category>
                         <table>lcb_slides_category</table>
                     </category>
+                    <product>
+                        <table>lcb_slides_product</table>
+                    </product>
                     <areas>
                         <table>lcb_areas</table>
                     </areas>
                 </entities>
             </slides_mysql4>
         </models>
-        <events>
-            <adminhtml_catalog_category_tabs>
-                <observers>
-                    <lcb_slides_category_tabs_observer>
-                        <class>slides/observer</class>
-                        <method>addCategoryTab</method>
-                    </lcb_slides_category_tabs_observer>
-                </observers>
-            </adminhtml_catalog_category_tabs>
-        </events>
         <resources>
             <lcb_slides_setup>
                 <setup>
@@ -97,6 +90,25 @@
         </routers>
     </admin>
     <adminhtml>
+        <events>
+            <adminhtml_catalog_category_tabs>
+                <observers>
+                    <lcb_slides_category_tabs_observer>
+                        <class>slides/observer</class>
+                        <method>addCategoryTab</method>
+                    </lcb_slides_category_tabs_observer>
+                </observers>
+            </adminhtml_catalog_category_tabs>
+             <catalog_product_save_before>
+                <observers>
+                     <lcb_save_product_slides>
+                        <type>singleton</type>
+                        <class>slides/observer</class>
+                        <method>saveProductSlides</method>
+                     </lcb_save_product_slides>
+                </observers>
+            </catalog_product_save_before>
+        </events>
         <menu>
             <cms>
                 <children>

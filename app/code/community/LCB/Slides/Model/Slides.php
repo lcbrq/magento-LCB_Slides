@@ -33,7 +33,7 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
 
         return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $this->getImage();
     }
-    
+
     /**
      * Alias for getText() adjusted with template filter
      */

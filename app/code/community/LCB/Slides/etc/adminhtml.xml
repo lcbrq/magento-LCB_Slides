@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<adminhtml>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <lcb_slides translate="title" module="slides">
+                                        <title>Slides</title>
+                                        <sort_order>1250</sort_order>
+                                    </lcb_slides>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</adminhtml>
