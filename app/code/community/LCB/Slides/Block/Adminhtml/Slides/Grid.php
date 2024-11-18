@@ -22,7 +22,7 @@ class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget
     {
 
         $collection = Mage::getModel("slides/slides")->getCollection();
-       
+
         switch (Mage::app()->getRequest()->getControllerName()) {
             case 'catalog_category':
                 $collection->getSelect()->join( array('slides_category'=>  Mage::getSingleton('core/resource')->getTableName('slides/category')), 'slides_category.slide_id = main_table.id', array('category_id'));
@@ -74,7 +74,7 @@ class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget
             'index' => 'area',
             'options'=> Mage::getModel('slides/areas')->toOptionArray()
         ));
-        
+
         $this->addColumn("position", array(
             'header' => Mage::helper("slides")->__("Position"),
             'index' => "position",

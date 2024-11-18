@@ -1,0 +1,35 @@
+<?php 
+/**
+ * @var LCB_Slides_Block_Adminhtml_Catalog_Product_Edit_Tab $this
+ */
+$areas = Mage::getModel('slides/areas')->toOptionArray(); ?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Attributes'); ?></h4>
+    </div>
+    <div class="fieldset fieldset-wide" id="group_fields19">
+        <div class="hor-scroll">
+            <table class="form-list" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td class="label">
+                            <label for="lcb_product_slide_area">
+                                <?php echo $this->__("Slide area"); ?>
+                            </label>
+                        </td>
+                        <td class="value">
+                            <select id="lcb_product_slide_area" name="lcb_product_slide_area[]" class="" type="text">
+                                <option value=""><?php echo $this->__('None'); ?></option>
+                                <?php foreach($areas as $id => $name): ?>
+                                <option value="<?php echo $id; ?>" <?php if ($id == $this->getSelectedAreaId()): ?>selected<?php endif; ?>>
+                                        <?php echo $name; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

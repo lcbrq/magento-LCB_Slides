@@ -30,7 +30,7 @@ class LCB_Slides_Model_Mysql4_Slides_Collection extends Mage_Core_Model_Mysql4_C
 
         return $filter;
     }
-    
+
     /**
      * Get slide options by key
      * 

@@ -26,4 +26,23 @@ class LCB_Slides_Model_Observer {
         }
     }
 
+    /**
+     * Save product slides
+     *
+     * @param   Varien_Event_Observer $observer
+     */
+    public function saveProductSlides($observer){
+        $product = $observer->getProduct();
+        $areas = Mage::app()->getRequest()->getParam('lcb_product_slide_area');
+        if ($areas && $product && $product->getId()){
+            foreach ($areas as $areaId) {
+                $model = Mage::getModel('slides/product');
+                $model->load($product->getId(), 'product_id');
+                $model->setProductId($product->getId());
+                $model->setAreaId($areaId);
+                $model->save();
+            }
+        }
+    }
+
 }

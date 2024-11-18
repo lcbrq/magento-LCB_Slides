@@ -49,6 +49,12 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
             'note' => '(*.jpg, *.png, *.gif)',
         ));
 
+        $fieldset->addField('image_mobile', 'image', array(
+            'label' => Mage::helper('slides')->__('Image (mobile)'),
+            'name' => 'image_mobile',
+            'note' => Mage::helper('slides')->__('Possible replacement for mobiles'),
+        ));
+
         $fieldset->addField('position', 'text', array(
             'label' => Mage::helper('slides')->__('Position'),
             'name' => 'position',

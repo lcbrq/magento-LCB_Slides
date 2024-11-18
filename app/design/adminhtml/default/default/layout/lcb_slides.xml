@@ -10,4 +10,17 @@
             <block type="slides/adminhtml_areas" name="areas" />
         </reference>
     </slides_adminhtml_areas_index>
+    <adminhtml_catalog_product_edit>
+        <reference name="product_tabs">
+            <action method="addTab">
+                <name>Slides</name>
+                <block>slides/adminhtml_catalog_product_edit_tab</block>
+            </action>
+        </reference>
+    </adminhtml_catalog_product_edit>
+    <slides_adminhtml_slides_producttab>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="slides/adminhtml_catalog_product_edit_tab" name="catalog.product.edit.tab.slides" template="lcb/slides/catalog/product/tab.phtml" />
+        </block>
+    </slides_adminhtml_slides_producttab>
 </layout>

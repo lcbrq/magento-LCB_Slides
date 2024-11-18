@@ -14,6 +14,18 @@ class LCB_Slides_Model_Areas extends Mage_Core_Model_Abstract {
         $this->_init("slides/areas");
     }
 
+    /**
+     * Get area slides
+     *
+     * @return LCB_Slides_Model_Mysql4_Slides_Collection
+     */
+    public function getSlides(){
+        return Mage::getModel('slides/slides')->getCollection()->addFieldToFilter('area', $this->getId());
+    }
+
+    /**
+     * @return array
+     */
     public function toOptionArray()
     {
         $array = array();
