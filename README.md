@@ -1,5 +1,5 @@
 # LCB_Slides
-Magento slides management with category support
+Simple Magento/OpenMage slides management with category support
  
 ### Version
 
