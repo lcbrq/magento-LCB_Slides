@@ -39,6 +39,12 @@ class LCB_Slides_Block_Adminhtml_Areas_Grid extends Mage_Adminhtml_Block_Widget_
             "header" => Mage::helper("slides")->__("Name"),
             "index" => "name",
         ));
+
+        $this->addColumn("description", array(
+            "header" => Mage::helper("slides")->__("Description"),
+            "index" => "description",
+        ));
+
         $this->addColumn("position", array(
             "header" => Mage::helper("slides")->__("Position"),
             "index" => "position",

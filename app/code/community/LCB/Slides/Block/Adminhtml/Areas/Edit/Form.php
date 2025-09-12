@@ -13,11 +13,11 @@ class LCB_Slides_Block_Adminhtml_Areas_Edit_Form extends Mage_Adminhtml_Block_Wi
     {
         $form = new Varien_Data_Form(
             array(
-            "id" => "edit_form",
-            "action" => $this->getUrl("*/*/save", array("id" => $this->getRequest()->getParam("id"))),
-            "method" => "post",
-            "enctype" => "multipart/form-data",
-                )
+                "id" => "edit_form",
+                "action" => $this->getUrl("*/*/save", array("id" => $this->getRequest()->getParam("id"))),
+                "method" => "post",
+                "enctype" => "multipart/form-data",
+            )
         );
         $form->setUseContainer(true);
         $this->setForm($form);

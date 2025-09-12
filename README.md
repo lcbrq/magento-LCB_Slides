@@ -1,59 +1,33 @@
 # LCB_Slides
+
 Simple Magento/OpenMage slides management with category support
  
 ### Version
 
-*1.5.0*
+#### 1.6.0
 
 ### Changelog
 
-### 1.5.1
+*1.6.0* Add area description and format changelog
 
-* Various adjustments including critical fixes for PHP 8.3
+*1.5.1* Various adjustments including critical fixes for PHP 8.3
 
-### 1.5.0
+*1.5.0* Refactor to resource model usage
 
-* Refactor to resource model usage
+*1.4.2* Remove obsolete frontend route and adjust XML declarations
 
-### 1.4.2
+*1.4.1* Mass code format with php-cs-fixer and reverse changelog
 
-* Remove obsolete frontend route and adjust XML declarations
+*1.4.0* Add composer declaration
 
-### 1.4.1
+*1.3.2* Remove obsolete frontend controller and `getAreaSlides` method to helper
 
-* Mass code format with php-cs-fixer and reverse changelog
+*1.3.1* Fixed slide name on admin grid and made use of name in layout for sample block area
 
-### 1.4.0
+*1.3.0* Added options model, configurable slide transition time
 
-* Add composer declaration
+*1.2.0* Added position and target window management for slides
 
-### 1.3.2
+*1.1.1* Added translations
 
-* Remove obsolete frontend controller and `getAreaSlides` method to helper
-
-### 1.3.1
-
-* Fixed slide name on admin grid and made use of name in layout for sample block area
-
-### 1.3.0
-
-* Added options model, configurable slide transition time
-
-### 1.2.0
-
-* Added position and target window management for slides
-
-### 1.1.1
-
-* Added translations
-
-### 1.1.0
-
-* Added modman
-
-
-
-
-
-
-
+*1.1.0* Added modman
