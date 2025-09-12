@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Banners management 
+ * Banners management
  *
  * @category   LCB
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Helper_Data extends Mage_Core_Helper_Abstract {
-
+class LCB_Slides_Helper_Data extends Mage_Core_Helper_Abstract
+{
     /**
      * @var boolean
      */
@@ -26,7 +26,8 @@ class LCB_Slides_Helper_Data extends Mage_Core_Helper_Abstract {
 
             try {
                 $this->isMobile = Zend_Http_UserAgent_Mobile::match(
-                    Mage::helper('core/http')->getHttpUserAgent(), $_SERVER
+                    Mage::helper('core/http')->getHttpUserAgent(),
+                    $_SERVER
                 );
                 if (preg_match('/(tablet|ipad|playbook)|(android(?!.*(mobi|opera mini)))/i', strtolower($_SERVER['HTTP_USER_AGENT']))) {
                     $this->isMobile = false;
@@ -41,7 +42,7 @@ class LCB_Slides_Helper_Data extends Mage_Core_Helper_Abstract {
 
     /**
      * Get slides for target category id
-     * 
+     *
      * @param int $categoryId
      * @return array
      */
@@ -58,17 +59,17 @@ class LCB_Slides_Helper_Data extends Mage_Core_Helper_Abstract {
 
     /**
      * Get slides for target area
-     * 
+     *
      * @param string $code
      * @return LCB_Slides_Model_Mysql4_Areas_Collection
      */
     public function getAreaSlides($code)
     {
-         $area = Mage::getModel('slides/areas')->load($code, 'name');
-         $collection = Mage::getModel('slides/slides')->getCollection()->addFieldToFilter('area', $area->getId());
-         $collection->addFieldToFilter('enabled', true);
-         $collection->getSelect()->order('position');
-         return $collection;
+        $area = Mage::getModel('slides/areas')->load($code, 'name');
+        $collection = Mage::getModel('slides/slides')->getCollection()->addFieldToFilter('area', $area->getId());
+        $collection->addFieldToFilter('enabled', true);
+        $collection->getSelect()->order('position');
+        return $collection;
     }
 
     /**
@@ -81,7 +82,7 @@ class LCB_Slides_Helper_Data extends Mage_Core_Helper_Abstract {
     {
         $slides = array();
         $areaIds = array_filter(
-                array(Mage::getModel('slides/product')->getCollection()->addFieldToFilter('product_id', $productId)->getFirstItem()->getAreaId())
+            array(Mage::getModel('slides/product')->getCollection()->addFieldToFilter('product_id', $productId)->getFirstItem()->getAreaId())
         );
         if (!$areaIds) {
             $defaultAreaId = Mage::getStoreConfig('lcb_slides/general/default_area');

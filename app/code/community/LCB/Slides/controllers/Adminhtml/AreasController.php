@@ -7,8 +7,8 @@
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Adminhtml_AreasController extends Mage_Adminhtml_Controller_Action {
-
+class LCB_Slides_Adminhtml_AreasController extends Mage_Adminhtml_Controller_Action
+{
     protected function _initAction()
     {
         $this->loadLayout()->_setActiveMenu("slides/areas")->_addBreadcrumb(Mage::helper("adminhtml")->__("Areas  Manager"), Mage::helper("adminhtml")->__("Areas Manager"));

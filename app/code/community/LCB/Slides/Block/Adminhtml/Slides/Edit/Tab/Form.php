@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Banners management 
+ * Banners management
  *
  * @category   LCB
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Block_Widget_Form {
-
+class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Block_Widget_Form
+{
     protected function _prepareForm()
     {
 
@@ -21,7 +21,7 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
             'values' => Mage::getSingleton('adminhtml/system_config_source_yesno')->toArray(),
             'name' => 'enabled'
         ));
-        
+
         $fieldset->addField("name", "text", array(
             "label" => Mage::helper("slides")->__("Name"),
             "name" => "name",

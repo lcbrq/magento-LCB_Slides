@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Banners management 
+ * Banners management
  *
  * @category   LCB
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Block_Widget extends Mage_Core_Block_Template implements Mage_Widget_Block_Interface {
-
+class LCB_Slides_Block_Widget extends Mage_Core_Block_Template implements Mage_Widget_Block_Interface
+{
     /**
      * Get cache key informative items
      *
@@ -26,7 +26,7 @@ class LCB_Slides_Block_Widget extends Mage_Core_Block_Template implements Mage_W
     }
 
     /**
-     * 
+     *
      * @return string
      */
     protected function _toHtml()

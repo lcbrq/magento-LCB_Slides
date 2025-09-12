@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Banners management 
+ * Banners management
  *
  * @category   LCB
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
+class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract
+{
+    public const TARGET_SELF = 0;
+    public const TARGET_NEW_WINDOW = 1;
 
-    const TARGET_SELF = 0;
-    const TARGET_NEW_WINDOW = 1;
-    
-    const DEFAULT_TRANSITION_TIME = 2000;
+    public const DEFAULT_TRANSITION_TIME = 2000;
 
     protected function _construct()
     {
@@ -21,7 +21,7 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
 
     /**
      * Get full image url
-     * 
+     *
      * @return string
      */
     public function getImageUrl()
@@ -37,14 +37,15 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
     /**
      * Alias for getText() adjusted with template filter
      */
-    public function getContent(){
+    public function getContent()
+    {
         $text = $this->getText();
         return Mage::getSingleton('widget/template_filter')->filter($text);
     }
 
     /**
      * Get slide url open in self or new window
-     * 
+     *
      * @return string
      */
     public function getTarget()
@@ -75,7 +76,7 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
 
     /**
      * Get ordered slides for target area
-     * 
+     *
      * @param string area name
      * @return LCB_Slides_Model_Mysql4_Slides_Collection
      */
@@ -89,10 +90,10 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract {
                 ->setOrder('position', 'ASC');
         return $slides;
     }
-    
+
     /**
      * Get json encoded additional slide options as array
-     * 
+     *
      * @return array
      */
     public function getOptions()

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Banners management 
+ * Banners management
  *
  * @category   LCB
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Block_Index extends Mage_Core_Block_Template {
-    
+class LCB_Slides_Block_Index extends Mage_Core_Block_Template
+{
     /**
      * Get cache key informative items
      *
@@ -27,7 +27,7 @@ class LCB_Slides_Block_Index extends Mage_Core_Block_Template {
 
     /**
      * Get slides collection
-     * 
+     *
      * @return LCB_Slides_Model_Mysql4_Slides_Collection
      */
     public function getSlides()
@@ -35,5 +35,5 @@ class LCB_Slides_Block_Index extends Mage_Core_Block_Template {
         $collection = Mage::getModel('slides/slides')->getAreaSlides($this->getNameInLayout());
         return $collection;
     }
-    
+
 }

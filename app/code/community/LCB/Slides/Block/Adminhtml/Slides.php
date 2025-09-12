@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Banners management 
+ * Banners management
  *
  * @category   LCB
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Block_Adminhtml_Slides extends Mage_Adminhtml_Block_Widget_Grid_Container {
-
+class LCB_Slides_Block_Adminhtml_Slides extends Mage_Adminhtml_Block_Widget_Grid_Container
+{
     public function __construct()
     {
         $this->_controller = "adminhtml_slides";

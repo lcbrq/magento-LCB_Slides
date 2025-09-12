@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Banners management 
+ * Banners management
  *
  * @category   LCB
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Block_Adminhtml_Areas_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs {
-
+class LCB_Slides_Block_Adminhtml_Areas_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs
+{
     public function __construct()
     {
         parent::__construct();

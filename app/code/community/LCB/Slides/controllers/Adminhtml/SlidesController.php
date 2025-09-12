@@ -7,8 +7,8 @@
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Action {
-
+class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Action
+{
     protected function _initAction()
     {
         $this->loadLayout()->_setActiveMenu("slides/slides")->_addBreadcrumb(Mage::helper("adminhtml")->__("Slides  Manager"), Mage::helper("adminhtml")->__("Slides Manager"));
@@ -132,7 +132,7 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                                 $uploader->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
                                 $uploader->setAllowRenameFiles(false);
                                 $uploader->setFilesDispersion(false);
-                                $destFile = $path . preg_replace('/[^a-zA-Z0-9-_\.]/','', $_FILES['image']['name']);
+                                $destFile = $path . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $_FILES['image']['name']);
                                 $filename = $uploader->getNewFileName($destFile);
                                 $uploader->save($path, $filename);
 

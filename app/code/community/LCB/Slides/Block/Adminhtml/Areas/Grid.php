@@ -7,8 +7,8 @@
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Block_Adminhtml_Areas_Grid extends Mage_Adminhtml_Block_Widget_Grid {
-
+class LCB_Slides_Block_Adminhtml_Areas_Grid extends Mage_Adminhtml_Block_Widget_Grid
+{
     public function __construct()
     {
         parent::__construct();

@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Banners management 
+ * Banners management
  *
  * @category   LCB
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Model_Observer {
-
+class LCB_Slides_Model_Observer
+{
     /**
      * Adds a custom tab to adminhtml category page
-     * 
+     *
      * @param   Varien_Event_Observer $observer
      */
     public function addCategoryTab($observer)
@@ -31,10 +31,11 @@ class LCB_Slides_Model_Observer {
      *
      * @param   Varien_Event_Observer $observer
      */
-    public function saveProductSlides($observer){
+    public function saveProductSlides($observer)
+    {
         $product = $observer->getProduct();
         $areas = Mage::app()->getRequest()->getParam('lcb_product_slide_area');
-        if ($areas && $product && $product->getId()){
+        if ($areas && $product && $product->getId()) {
             foreach ($areas as $areaId) {
                 $model = Mage::getModel('slides/product');
                 $model->load($product->getId(), 'product_id');

@@ -7,8 +7,8 @@
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget_Grid {
-
+class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget_Grid
+{
     public function __construct()
     {
         parent::__construct();
@@ -25,7 +25,7 @@ class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget
 
         switch (Mage::app()->getRequest()->getControllerName()) {
             case 'catalog_category':
-                $collection->getSelect()->join( array('slides_category'=>  Mage::getSingleton('core/resource')->getTableName('slides/category')), 'slides_category.slide_id = main_table.id', array('category_id'));
+                $collection->getSelect()->join(array('slides_category' =>  Mage::getSingleton('core/resource')->getTableName('slides/category')), 'slides_category.slide_id = main_table.id', array('category_id'));
                 $collection->addFieldToFilter('type', LCB_Slides_Model_Mysql4_Slides::TYPE_CATEGORY);
                 $collection->addFieldToFilter('category_id', $this->getRequest()->getParam('id'));
                 break;
@@ -72,20 +72,20 @@ class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget
             'header' => Mage::helper("slides")->__("Area"),
             'type' => 'options',
             'index' => 'area',
-            'options'=> Mage::getModel('slides/areas')->toOptionArray()
+            'options' => Mage::getModel('slides/areas')->toOptionArray()
         ));
 
         $this->addColumn("position", array(
             'header' => Mage::helper("slides")->__("Position"),
             'index' => "position",
         ));
-        
+
         $this->addColumn("enabled", array(
             "header" => Mage::helper("slides")->__("Enable"),
             'type' => 'options',
             'index' => "enabled",
             'options'   => Mage::getSingleton('adminhtml/system_config_source_yesno')->toArray(),
-        ));        
+        ));
 
         if (!Mage::app()->isSingleStoreMode()) {
             $this->addColumn('store_id', array(

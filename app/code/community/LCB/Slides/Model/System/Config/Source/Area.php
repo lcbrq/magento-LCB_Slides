@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Banners management 
+ * Banners management
  *
  * @category   LCB
  * @package    LCB_Slides
@@ -9,14 +9,12 @@
  */
 class LCB_Slides_Model_System_Config_Source_Area
 {
-
     /**
      * @return array
      */
     public function toOptionArray()
     {
-        $array = array
-        (
+        $array = array(
             '' => __('None'),
             'all' => __('All')
         );

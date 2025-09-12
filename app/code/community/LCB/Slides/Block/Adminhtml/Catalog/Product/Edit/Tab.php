@@ -1,20 +1,21 @@
 <?php
 
 /**
- * Banners management 
+ * Banners management
  *
  * @category   LCB
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Block_Adminhtml_Catalog_Product_Edit_Tab extends Mage_Adminhtml_Block_Widget implements Mage_Adminhtml_Block_Widget_Tab_Interface {
-
+class LCB_Slides_Block_Adminhtml_Catalog_Product_Edit_Tab extends Mage_Adminhtml_Block_Widget implements Mage_Adminhtml_Block_Widget_Tab_Interface
+{
     /**
      * Get current product id
      *
      * @return int
      */
-    public function getProductId() {
+    public function getProductId()
+    {
         return (int) $this->getRequest()->getParam('id');
     }
 
@@ -65,7 +66,7 @@ class LCB_Slides_Block_Adminhtml_Catalog_Product_Edit_Tab extends Mage_Adminhtml
     {
         return 'ajax';
     }
-    
+
     /**
      * @return int
      */

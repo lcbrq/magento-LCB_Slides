@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Banners management 
+ * Banners management
  *
  * @category   LCB
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Model_Areas extends Mage_Core_Model_Abstract {
-
+class LCB_Slides_Model_Areas extends Mage_Core_Model_Abstract
+{
     protected function _construct()
     {
         $this->_init("slides/areas");
@@ -19,7 +19,8 @@ class LCB_Slides_Model_Areas extends Mage_Core_Model_Abstract {
      *
      * @return LCB_Slides_Model_Mysql4_Slides_Collection
      */
-    public function getSlides(){
+    public function getSlides()
+    {
         return Mage::getModel('slides/slides')->getCollection()->addFieldToFilter('area', $this->getId());
     }
 
