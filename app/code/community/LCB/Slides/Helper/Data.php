@@ -61,7 +61,7 @@ class LCB_Slides_Helper_Data extends Mage_Core_Helper_Abstract
      * Get slides for target area
      *
      * @param string $code
-     * @return LCB_Slides_Model_Mysql4_Areas_Collection
+     * @return LCB_Slides_Model_Resource_Areas_Collection
      */
     public function getAreaSlides($code)
     {

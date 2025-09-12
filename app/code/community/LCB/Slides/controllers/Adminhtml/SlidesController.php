@@ -103,9 +103,9 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                 }
 
                 if ($post_data['category_id']) {
-                    $post_data['type'] = LCB_Slides_Model_Mysql4_Slides::TYPE_CATEGORY;
+                    $post_data['type'] = LCB_Slides_Model_Resource_Slides::TYPE_CATEGORY;
                 } else {
-                    $post_data['type'] = LCB_Slides_Model_Mysql4_Slides::TYPE_GENERAL;
+                    $post_data['type'] = LCB_Slides_Model_Resource_Slides::TYPE_GENERAL;
                 }
 
                 try {
@@ -230,7 +230,7 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                 $model = Mage::getModel("slides/slides");
                 $id = $this->getRequest()->getParam("id");
                 $model->load($id);
-                $category = $model->getType() == LCB_Slides_Model_Mysql4_Slides::TYPE_CATEGORY;
+                $category = $model->getType() == LCB_Slides_Model_Resource_Slides::TYPE_CATEGORY;
                 $model->delete();
                 Mage::getSingleton("adminhtml/session")->addSuccess(Mage::helper("adminhtml")->__("Item was successfully deleted"));
                 if ($model) {

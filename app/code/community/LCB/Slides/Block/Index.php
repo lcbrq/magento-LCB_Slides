@@ -28,7 +28,7 @@ class LCB_Slides_Block_Index extends Mage_Core_Block_Template
     /**
      * Get slides collection
      *
-     * @return LCB_Slides_Model_Mysql4_Slides_Collection
+     * @return LCB_Slides_Model_Resource_Slides_Collection
      */
     public function getSlides()
     {

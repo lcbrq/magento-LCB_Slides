@@ -78,7 +78,7 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract
      * Get ordered slides for target area
      *
      * @param string area name
-     * @return LCB_Slides_Model_Mysql4_Slides_Collection
+     * @return LCB_Slides_Model_Resource_Slides_Collection
      */
     public function getAreaSlides($area)
     {

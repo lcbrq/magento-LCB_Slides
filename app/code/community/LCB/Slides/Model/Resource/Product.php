@@ -7,11 +7,11 @@
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Model_Mysql4_Areas extends Mage_Core_Model_Mysql4_Abstract
+class LCB_Slides_Model_Resource_Product extends Mage_Core_Model_Resource_Db_Abstract
 {
     protected function _construct()
     {
-        $this->_init("slides/areas", "id");
+        $this->_init("slides/product", "id");
     }
 
 }

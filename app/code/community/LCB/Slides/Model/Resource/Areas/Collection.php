@@ -7,7 +7,7 @@
  * @package    LCB_Slides
  * @author     Silpion Tomasz Gregorczyk <tom@leftcurlybracket.com>
  */
-class LCB_Slides_Model_Mysql4_Areas_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
+class LCB_Slides_Model_Resource_Areas_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
     public function _construct()
     {

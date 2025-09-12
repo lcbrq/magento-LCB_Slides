@@ -2,7 +2,7 @@
 <config>
     <modules>
         <LCB_Slides>
-            <version>1.4.2</version>
+            <version>1.5.0</version>
         </LCB_Slides>
     </modules>
     <frontend>
@@ -28,10 +28,10 @@
         <models>
             <slides>
                 <class>LCB_Slides_Model</class>
-                <resourceModel>slides_mysql4</resourceModel>
+                <resourceModel>slides_resource</resourceModel>
             </slides>
-            <slides_mysql4>
-                <class>LCB_Slides_Model_Mysql4</class>
+            <slides_resource>
+                <class>LCB_Slides_Model_Resource</class>
                 <entities>		  
                     <slides>
                         <table>lcb_slides</table>
@@ -46,7 +46,7 @@
                         <table>lcb_areas</table>
                     </areas>
                 </entities>
-            </slides_mysql4>
+            </slides_resource>
         </models>
         <resources>
             <lcb_slides_setup>

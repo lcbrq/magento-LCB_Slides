@@ -3,9 +3,13 @@ Simple Magento/OpenMage slides management with category support
  
 ### Version
 
-*1.4.2*
+*1.5.0*
 
 ### Changelog
+
+### 1.5.0
+
+* Refactor to resource model usage
 
 ### 1.4.2
 
