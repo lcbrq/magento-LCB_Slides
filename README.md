@@ -3,9 +3,13 @@ Simple Magento/OpenMage slides management with category support
  
 ### Version
 
-1.4.1
+*1.4.2*
 
 ### Changelog
+
+### 1.4.2
+
+* Remove obsolete frontend route and adjust XML declarations
 
 ### 1.4.1
 

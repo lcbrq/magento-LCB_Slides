@@ -1,7 +1,7 @@
 {
     "name": "lcbrq/openmage-slides",
     "license": ["MIT"],
-    "version": "1.4.1",
+    "version": "1.4.2",
     "type": "magento-module",
     "description": "Simple Magento/OpenMage slides management with category support.",
     "keywords": ["magento", "openmage", "mahocommerce"],

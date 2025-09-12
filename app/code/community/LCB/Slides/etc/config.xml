@@ -2,19 +2,10 @@
 <config>
     <modules>
         <LCB_Slides>
-            <version>1.4.0</version>
+            <version>1.4.2</version>
         </LCB_Slides>
     </modules>
     <frontend>
-        <routers>
-            <slides>
-                <use>standard</use>
-                <args>
-                    <module>LCB_Slides</module>
-                    <frontName>slides</frontName>
-                </args>
-            </slides>
-        </routers>
         <layout>
             <updates>
                 <slides>
@@ -99,13 +90,13 @@
                     </lcb_slides_category_tabs_observer>
                 </observers>
             </adminhtml_catalog_category_tabs>
-             <catalog_product_save_before>
+            <catalog_product_save_before>
                 <observers>
-                     <lcb_save_product_slides>
+                    <lcb_save_product_slides>
                         <type>singleton</type>
                         <class>slides/observer</class>
                         <method>saveProductSlides</method>
-                     </lcb_save_product_slides>
+                    </lcb_save_product_slides>
                 </observers>
             </catalog_product_save_before>
         </events>

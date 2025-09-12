@@ -4,7 +4,6 @@
         <LCB_Slides>
             <active>true</active>
             <codePool>community</codePool>
-            <version>1.3.0</version>
         </LCB_Slides>
     </modules>
 </config>
