@@ -98,7 +98,7 @@ class LCB_Slides_Model_Slides extends Mage_Core_Model_Abstract
      */
     public function getOptions()
     {
-        $options = json_decode($this->getData('options'), true);
+        $options = json_decode((string) $this->getData('options'), true);
         if (!isset($options['transition_time']) || !$options['transition_time']) {
             $options['transition_time'] = self::DEFAULT_TRANSITION_TIME;
         }

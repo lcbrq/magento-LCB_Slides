@@ -16,8 +16,8 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit extends Mage_Adminhtml_Block_Widget
         $this->_objectId = "id";
         $this->_blockGroup = "slides";
         $this->_controller = "adminhtml_slides";
-        $this->_updateButton("save", "label", Mage::helper("slides")->__("Save Item"));
-        $this->_updateButton("delete", "label", Mage::helper("slides")->__("Delete Item"));
+        $this->_updateButton("save", "label", Mage::helper("slides")->__("Save"));
+        $this->_updateButton("delete", "label", Mage::helper("slides")->__("Delete"));
 
         $this->_addButton("saveandcontinue", array(
             "label" => Mage::helper("slides")->__("Save And Continue Edit"),
@@ -34,9 +34,9 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit extends Mage_Adminhtml_Block_Widget
     public function getHeaderText()
     {
         if (Mage::registry("slides_data") && Mage::registry("slides_data")->getId()) {
-            return Mage::helper("slides")->__("Edit slide '%s'", $this->htmlEscape(Mage::registry("slides_data")->getName()));
+            return Mage::helper("slides")->__("Edit", $this->htmlEscape(Mage::registry("slides_data")->getName()));
         } else {
-            return Mage::helper("slides")->__("Add Item");
+            return Mage::helper("slides")->__("Add");
         }
     }
 

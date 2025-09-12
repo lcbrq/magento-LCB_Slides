@@ -7,6 +7,10 @@ Simple Magento/OpenMage slides management with category support
 
 ### Changelog
 
+### 1.5.1
+
+* Various adjustments including critical fixes for PHP 8.3
+
 ### 1.5.0
 
 * Refactor to resource model usage

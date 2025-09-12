@@ -14,7 +14,6 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tabs extends Mage_Adminhtml_Block_W
         parent::__construct();
         $this->setId("slides_tabs");
         $this->setDestElementId("edit_form");
-        $this->setTitle(Mage::helper("slides")->__("Item Information"));
     }
 
     protected function _beforeToHtml()
