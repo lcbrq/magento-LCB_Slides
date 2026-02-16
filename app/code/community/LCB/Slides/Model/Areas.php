@@ -35,5 +35,4 @@ class LCB_Slides_Model_Areas extends Mage_Core_Model_Abstract
         }
         return $array;
     }
-
 }

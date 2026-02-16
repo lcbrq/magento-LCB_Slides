@@ -35,5 +35,4 @@ class LCB_Slides_Block_Index extends Mage_Core_Block_Template
         $collection = Mage::getModel('slides/slides')->getAreaSlides($this->getNameInLayout());
         return $collection;
     }
-
 }

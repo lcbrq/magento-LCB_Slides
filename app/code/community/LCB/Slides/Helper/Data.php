@@ -21,9 +21,7 @@ class LCB_Slides_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getIsMobileDevice()
     {
-
         if (!is_bool($this->isMobile)) {
-
             try {
                 $this->isMobile = Zend_Http_UserAgent_Mobile::match(
                     Mage::helper('core/http')->getHttpUserAgent(),
@@ -33,7 +31,6 @@ class LCB_Slides_Helper_Data extends Mage_Core_Helper_Abstract
                     $this->isMobile = false;
                 }
             } catch (Exception $e) {
-
             }
         }
 
@@ -100,5 +97,4 @@ class LCB_Slides_Helper_Data extends Mage_Core_Helper_Abstract
         }
         return $slides;
     }
-
 }

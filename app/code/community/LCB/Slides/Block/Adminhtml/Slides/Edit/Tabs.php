@@ -31,5 +31,4 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tabs extends Mage_Adminhtml_Block_W
         ));
         return parent::_beforeToHtml();
     }
-
 }

@@ -11,7 +11,6 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Options extends Mage_Adminhtml_
 {
     protected function _prepareForm()
     {
-
         $form = new Varien_Data_Form();
         $this->setForm($form);
         $fieldset = $form->addFieldset("slide_options", array("legend" => Mage::helper("slides")->__("Additional options")));
@@ -29,5 +28,4 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Options extends Mage_Adminhtml_
 
         return parent::_prepareForm();
     }
-
 }

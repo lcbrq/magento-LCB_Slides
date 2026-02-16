@@ -15,5 +15,4 @@ class LCB_Slides_Block_Adminhtml_Slides_Render_Area extends Mage_Adminhtml_Block
         $area = Mage::getModel('slides/areas')->load($id);
         return $area->getName();
     }
-
 }

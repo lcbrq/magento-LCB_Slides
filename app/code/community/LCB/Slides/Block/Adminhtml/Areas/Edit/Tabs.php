@@ -26,5 +26,4 @@ class LCB_Slides_Block_Adminhtml_Areas_Edit_Tabs extends Mage_Adminhtml_Block_Wi
         ));
         return parent::_beforeToHtml();
     }
-
 }

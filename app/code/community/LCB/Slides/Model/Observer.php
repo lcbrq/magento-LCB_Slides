@@ -45,5 +45,4 @@ class LCB_Slides_Model_Observer
             }
         }
     }
-
 }

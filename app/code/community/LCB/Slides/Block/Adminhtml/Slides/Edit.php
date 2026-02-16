@@ -11,7 +11,6 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit extends Mage_Adminhtml_Block_Widget
 {
     public function __construct()
     {
-
         parent::__construct();
         $this->_objectId = "id";
         $this->_blockGroup = "slides";
@@ -53,5 +52,4 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit extends Mage_Adminhtml_Block_Widget
             return $this->getUrl('*/*/');
         }
     }
-
 }

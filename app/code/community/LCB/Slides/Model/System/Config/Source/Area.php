@@ -24,5 +24,4 @@ class LCB_Slides_Model_System_Config_Source_Area
         }
         return $array;
     }
-
 }

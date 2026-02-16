@@ -27,5 +27,4 @@ class LCB_Slides_Block_Adminhtml_Slides extends Mage_Adminhtml_Block_Widget_Grid
             return parent::getCreateUrl();
         }
     }
-
 }

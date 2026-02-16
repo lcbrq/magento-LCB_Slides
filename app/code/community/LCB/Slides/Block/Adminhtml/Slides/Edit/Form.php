@@ -23,5 +23,4 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Form extends Mage_Adminhtml_Block_W
         $this->setForm($form);
         return parent::_prepareForm();
     }
-
 }

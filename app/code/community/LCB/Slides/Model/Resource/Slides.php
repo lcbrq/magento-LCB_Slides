@@ -16,5 +16,4 @@ class LCB_Slides_Model_Resource_Slides extends Mage_Core_Model_Resource_Db_Abstr
     {
         $this->_init("slides/slides", "id");
     }
-
 }

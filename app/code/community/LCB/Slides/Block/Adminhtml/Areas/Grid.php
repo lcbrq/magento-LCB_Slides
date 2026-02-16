@@ -72,5 +72,4 @@ class LCB_Slides_Block_Adminhtml_Areas_Grid extends Mage_Adminhtml_Block_Widget_
         ));
         return $this;
     }
-
 }

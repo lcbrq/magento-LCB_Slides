@@ -20,7 +20,6 @@ class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget
 
     protected function _prepareCollection()
     {
-
         $collection = Mage::getModel("slides/slides")->getCollection();
 
         switch (Mage::app()->getRequest()->getControllerName()) {
@@ -138,5 +137,4 @@ class LCB_Slides_Block_Adminhtml_Slides_Grid extends Mage_Adminhtml_Block_Widget
         }
         $this->getCollection()->addStoreFilter($value);
     }
-
 }

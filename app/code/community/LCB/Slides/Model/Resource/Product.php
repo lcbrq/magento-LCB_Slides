@@ -13,5 +13,4 @@ class LCB_Slides_Model_Resource_Product extends Mage_Core_Model_Resource_Db_Abst
     {
         $this->_init("slides/product", "id");
     }
-
 }

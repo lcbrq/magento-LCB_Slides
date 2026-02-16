@@ -13,5 +13,4 @@ class LCB_Slides_Model_Resource_Areas_Collection extends Mage_Core_Model_Resourc
     {
         $this->_init("slides/areas");
     }
-
 }

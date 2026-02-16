@@ -49,7 +49,6 @@ class LCB_Slides_Adminhtml_AreasController extends Mage_Adminhtml_Controller_Act
 
     public function newAction()
     {
-
         $this->_title($this->__("Slides"));
         $this->_title($this->__("Areas"));
         $this->_title($this->__("New Item"));
@@ -80,16 +79,11 @@ class LCB_Slides_Adminhtml_AreasController extends Mage_Adminhtml_Controller_Act
 
     public function saveAction()
     {
-
         $post_data = $this->getRequest()->getPost();
 
 
         if ($post_data) {
-
             try {
-
-
-
                 $model = Mage::getModel("slides/areas")
                         ->addData($post_data)
                         ->setId($this->getRequest()->getParam("id"))
@@ -164,5 +158,4 @@ class LCB_Slides_Adminhtml_AreasController extends Mage_Adminhtml_Controller_Act
         $grid = $this->getLayout()->createBlock('slides/adminhtml_areas_grid');
         $this->_prepareDownloadResponse($fileName, $grid->getExcelFile($fileName));
     }
-
 }

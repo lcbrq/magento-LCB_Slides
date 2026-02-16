@@ -77,5 +77,4 @@ class LCB_Slides_Block_Adminhtml_Catalog_Product_Edit_Tab extends Mage_Adminhtml
             return Mage::getModel('slides/product')->getCollection()->addFieldToFilter('product_id', $productId)->getFirstItem()->getAreaId();
         }
     }
-
 }

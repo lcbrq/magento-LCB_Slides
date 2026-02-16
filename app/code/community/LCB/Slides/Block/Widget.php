@@ -37,5 +37,4 @@ class LCB_Slides_Block_Widget extends Mage_Core_Block_Template implements Mage_W
                         ->setLimit($this->getData('limit'))
                         ->toHtml();
     }
-
 }

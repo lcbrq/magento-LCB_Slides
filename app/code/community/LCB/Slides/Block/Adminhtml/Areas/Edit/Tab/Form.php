@@ -11,7 +11,6 @@ class LCB_Slides_Block_Adminhtml_Areas_Edit_Tab_Form extends Mage_Adminhtml_Bloc
 {
     protected function _prepareForm()
     {
-
         $form = new Varien_Data_Form();
         $this->setForm($form);
         $fieldset = $form->addFieldset("slides_form", array("legend" => Mage::helper("slides")->__("Item information")));
@@ -40,5 +39,4 @@ class LCB_Slides_Block_Adminhtml_Areas_Edit_Tab_Form extends Mage_Adminhtml_Bloc
         }
         return parent::_prepareForm();
     }
-
 }

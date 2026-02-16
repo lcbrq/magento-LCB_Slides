@@ -15,5 +15,4 @@ class LCB_Slides_Block_Adminhtml_Slides_Render_Image extends Mage_Adminhtml_Bloc
         $path = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $value;
         return '<img alt="" style="width: 100%" src="' . $path . '">';
     }
-
 }

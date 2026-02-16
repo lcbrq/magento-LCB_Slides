@@ -54,7 +54,6 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
 
     public function newAction()
     {
-
         $this->_title($this->__("Slides"));
         $this->_title($this->__("Slides"));
         $this->_title($this->__("New Item"));
@@ -85,14 +84,11 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
 
     public function saveAction()
     {
-
         $postData = $this->getRequest()->getPost();
 
 
         if ($postData) {
-
             try {
-
                 if (isset($postData['stores']) && is_array($postData['stores'])) {
                     if (in_array('0', $postData['stores'])) {
                         $postData['store_id'] = '0';
@@ -109,17 +105,13 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                 }
 
                 try {
-
                     if (isset($postData['image']['delete']) && $postData['image']['delete'] == 1) {
                         $postData['image'] = '';
                     } else {
-
                         unset($postData['image']);
 
                         if (isset($_FILES)) {
-
                             if ($_FILES['image']['name']) {
-
                                 if ($this->getRequest()->getParam("id")) {
                                     $model = Mage::getModel("slides/slides")->load($this->getRequest()->getParam("id"));
                                     if ($model->getData('image')) {
@@ -147,17 +139,13 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                 }
 
                 try {
-
                     if (isset($postData['image_mobile']['delete']) && $postData['image_mobile']['delete']) {
                         $postData['image_mobile'] = '';
                     } else {
-
                         unset($postData['image_mobile']);
 
                         if (isset($_FILES)) {
-
                             if ($_FILES['image_mobile']['name']) {
-
                                 if ($this->getRequest()->getParam("id")) {
                                     $model = Mage::getModel("slides/slides")->load($this->getRequest()->getParam("id"));
                                     if ($model->getData('image_mobile')) {
@@ -289,5 +277,4 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
         $grid = $this->getLayout()->createBlock('slides/adminhtml_slides_grid');
         $this->_prepareDownloadResponse($fileName, $grid->getExcelFile($fileName));
     }
-
 }
