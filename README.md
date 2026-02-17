@@ -6,6 +6,15 @@ Simple Magento/OpenMage slides management with category support
 
 #### 1.6.0
 
+### Usage
+
+```
+$area = Mage::getModel('slides/areas')->load('test', 'name');
+$slides = Mage::getModel('slides/slides')->getCollection()
+    ->addFieldToFilter('enabled', true)
+    ->addFieldToFilter('area', $area->getId());
+```
+
 ### Changelog
 
 *1.6.0* Add area description and format changelog
