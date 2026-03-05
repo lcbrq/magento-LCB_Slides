@@ -9,6 +9,16 @@
  */
 class LCB_Slides_Model_Resource_Slides_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
+    /**
+     * @inheritDoc
+     */
+    protected $_eventPrefix = 'lcb_slides_collection';
+
+    /**
+     * @inheritDoc
+     */
+    protected $_eventObject = 'collection';
+
     public function _construct()
     {
         $this->_init("slides/slides");
@@ -22,6 +32,7 @@ class LCB_Slides_Model_Resource_Slides_Collection extends Mage_Core_Model_Resour
      */
     public function addStoreFilter($id)
     {
+
         $filter = $this->addFieldToFilter('store_id', array(
             array('regexp' => $id),
             array('eq' => '0')
@@ -45,4 +56,5 @@ class LCB_Slides_Model_Resource_Slides_Collection extends Mage_Core_Model_Resour
         }
         return $options;
     }
+
 }
