@@ -49,6 +49,11 @@ class LCB_Slides_Block_Adminhtml_Areas_Grid extends Mage_Adminhtml_Block_Widget_
             "header" => Mage::helper("slides")->__("Position"),
             "index" => "position",
         ));
+
+        $this->addColumn("transition_time", array(
+            "header" => Mage::helper("slides")->__("Transition time"),
+            "index" => "transition_time",
+        ));
         $this->addExportType('*/*/exportCsv', Mage::helper('sales')->__('CSV'));
         $this->addExportType('*/*/exportExcel', Mage::helper('sales')->__('Excel'));
 

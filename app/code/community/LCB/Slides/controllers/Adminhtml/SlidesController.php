@@ -218,14 +218,10 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                 $model = Mage::getModel("slides/slides");
                 $id = $this->getRequest()->getParam("id");
                 $model->load($id);
-                $category = $model->getType() == LCB_Slides_Model_Resource_Slides::TYPE_CATEGORY;
                 $model->delete();
                 Mage::getSingleton("adminhtml/session")->addSuccess(Mage::helper("adminhtml")->__("Item was successfully deleted"));
-                if ($model) {
-                    return $this->getUrl("adminhtml/catalog_category/");
-                } else {
-                    return $this->_redirect("*/*/");
-                }
+                $this->_redirect('*/*/');
+                return;
             } catch (Exception $e) {
                 Mage::getSingleton("adminhtml/session")->addError($e->getMessage());
                 $this->_redirect("*/*/edit", array("id" => $this->getRequest()->getParam("id")));
@@ -276,5 +272,80 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
         $fileName = 'slides.xml';
         $grid = $this->getLayout()->createBlock('slides/adminhtml_slides_grid');
         $this->_prepareDownloadResponse($fileName, $grid->getExcelFile($fileName));
+    }
+
+    public function visualEditorAction()
+    {
+        $slideId = (int) $this->getRequest()->getParam('id');
+
+        if (!$slideId) {
+            Mage::getSingleton('adminhtml/session')->addError(
+                Mage::helper('slides')->__('Unable to find slide.')
+            );
+
+            $this->_redirect('*/*/');
+            return;
+        }
+
+        $slideModel = Mage::getModel('slides/slides')->load($slideId);
+
+        if (!$slideModel->getId()) {
+            Mage::getSingleton('adminhtml/session')->addError(
+                Mage::helper('slides')->__('Unable to find slide.')
+            );
+
+            $this->_redirect('*/*/');
+            return;
+        }
+
+        Mage::register('current_slide', $slideModel);
+
+        $this->loadLayout();
+        $this->_setActiveMenu('cms/slides/slides');
+        $this->_addContent(
+            $this->getLayout()->createBlock('slides/adminhtml_slides_visualEditor')
+        );
+        $this->renderLayout();
+    }
+
+    public function saveVisualContentAction()
+    {
+        $slideId = (int) $this->getRequest()->getParam('id');
+        $contentHtml = (string) $this->getRequest()->getPost('content_html', '');
+        $contentCss = (string) $this->getRequest()->getPost('content_css', '');
+
+        if (!$slideId) {
+            Mage::getSingleton('adminhtml/session')->addError(
+                Mage::helper('slides')->__('Unable to find slide.')
+            );
+
+            $this->_redirect('*/*/');
+            return;
+        }
+
+        $slideModel = Mage::getModel('slides/slides')->load($slideId);
+
+        if (!$slideModel->getId()) {
+            Mage::getSingleton('adminhtml/session')->addError(
+                Mage::helper('slides')->__('Unable to find slide.')
+            );
+
+            $this->_redirect('*/*/');
+            return;
+        }
+
+        try {
+            $slideModel->setContentHtml($contentHtml);
+            $slideModel->setContentCss($contentCss);
+            $slideModel->save();
+
+            Mage::getSingleton('adminhtml/session')->addSuccess(
+                Mage::helper('slides')->__('Visual content has been saved.')
+            );
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+        }
+
+        $this->_redirect('*/*/edit', array('id' => $slideId));
     }
 }

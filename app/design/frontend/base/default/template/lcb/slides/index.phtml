@@ -1,0 +1,92 @@
+<?php $slides = $this->getSlides(); ?>
+
+<?php if (!count($slides)): ?>
+    <?php return; ?>
+<?php endif; ?>
+<?php $transitionTime = (int) $this->getTransitionTime(); ?>
+<div class="lcb-slider" id="lcb-slider-<?php echo $this->escapeHtml($this->getNameInLayout()); ?>"  data-transition-time="<?php echo $transitionTime ? $transitionTime : 4000; ?>">
+    <div class="slides">
+        <?php $slideIndex = 0; ?>
+        <?php foreach ($slides as $slide): ?>
+            <?php
+            $imageUrl = '';
+            $mobileImageUrl = '';
+
+            if ($slide->getImage()) {
+                $imageUrl = Mage::getBaseUrl('media') . ltrim($slide->getImage(), '/');
+            }
+
+            $mobileImage = '';
+
+            if ($slide->getData('mobile_image')) {
+                $mobileImage = $slide->getData('mobile_image');
+            } elseif ($slide->getData('image_mobile')) {
+                $mobileImage = $slide->getData('image_mobile');
+            } elseif ($slide->getMobileImage()) {
+                $mobileImage = $slide->getMobileImage();
+            }
+
+            if ($mobileImage) {
+                $mobileImageUrl = Mage::getBaseUrl('media') . ltrim($mobileImage, '/');
+            }
+            ?>
+
+            <div class="slide<?php if ($slideIndex === 0): ?> is-active<?php endif; ?>">
+                <?php if ($imageUrl): ?>
+                    <picture>
+                        <?php if ($mobileImageUrl): ?>
+                            <source
+                                media="(max-width: 480px)"
+                                srcset="<?php echo $this->escapeUrl($mobileImageUrl); ?>"
+                            />
+                        <?php endif; ?>
+
+                        <img
+                            src="<?php echo $this->escapeUrl($imageUrl); ?>"
+                            alt="<?php echo $this->escapeHtml($slide->getName()); ?>"
+                            class="slide-image"
+                        />
+                    </picture>
+                <?php endif; ?>
+
+                <?php $contentWrapperId = 'slide-content-html-' . (int) $slide->getId(); ?>
+
+                <?php if ($slide->getContentHtml()): ?>
+                    <div class="slide-content-html" id="<?php echo $this->escapeHtml($contentWrapperId); ?>">
+                        <div class="visual-banner-wrapper">
+                            <div class="visual-banner-inner">
+                                <?php echo Mage::helper('slides/content')->sanitizeHtml($slide->getContentHtml()); ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($slide->getContentCss()): ?>
+                    <style type="text/css">
+                        <?php
+                        echo Mage::helper('slides/content')->prepareScopedCss(
+                            $slide->getContentCss(),
+                            '#' . $contentWrapperId
+                        );
+                        ?>
+                    </style>
+                <?php endif; ?>
+            </div>
+
+            <?php $slideIndex++; ?>
+        <?php endforeach; ?>
+    </div>
+
+    <?php if (count($slides) > 1): ?>
+        <div class="dots">
+            <?php for ($dotIndex = 0; $dotIndex < count($slides); $dotIndex++): ?>
+                <button
+                    type="button"
+                    class="dot<?php if ($dotIndex === 0): ?> is-active<?php endif; ?>"
+                    data-slide-index="<?php echo (int) $dotIndex; ?>"
+                    aria-label="Przejdź do slajdu <?php echo (int) $dotIndex + 1; ?>"
+                ></button>
+            <?php endfor; ?>
+        </div>
+    <?php endif; ?>
+</div>

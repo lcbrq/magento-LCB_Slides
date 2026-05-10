@@ -1,0 +1,43 @@
+<?php $slide = $this->getSlide(); ?>
+
+<div class="content-header">
+    <h3>
+        <?php echo Mage::helper('slides')->__('Visual Editor'); ?>
+        <?php if ($slide): ?>
+            - <?php echo $this->escapeHtml($slide->getName()); ?>
+        <?php endif; ?>
+    </h3>
+</div>
+
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4><?php echo Mage::helper('slides')->__('Visual Editor Workspace'); ?></h4>
+    </div>
+
+    <div class="fieldset">
+        <div class="hor-scroll">
+            <p>
+                <a href="<?php echo $this->getBackUrl(); ?>" class="scalable back">
+                    <span><?php echo Mage::helper('slides')->__('Back to Slide'); ?></span>
+                </a>
+            </p>
+
+            <p style="margin:15px 0;">
+                <button type="button" id="lcb-grapes-save-button" class="scalable save">
+                    <span><?php echo Mage::helper('slides')->__('Save Visual Content'); ?></span>
+                </button>
+            </p>
+
+            <form id="lcb-grapes-save-form" action="<?php echo $this->getSaveVisualContentUrl(); ?>" method="post">
+                <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+                <input type="hidden" name="id" value="<?php echo (int) $slide->getId(); ?>" />
+                <input type="hidden" name="content_html" id="lcb-grapes-html" value="" />
+                <input type="hidden" name="content_css" id="lcb-grapes-css" value="" />
+                <input type="hidden" id="lcb-grapes-initial-html" value="<?php echo $this->escapeHtml($this->getSlideContentHtml()); ?>" />
+                <input type="hidden" id="lcb-grapes-initial-css" value="<?php echo $this->escapeHtml($this->getSlideContentCss()); ?>" />
+            </form>
+
+            <div id="lcb-grapes-visual-editor" style="margin-top:20px; height:700px; border:1px solid #d6d6d6; background:#fff;"></div>
+        </div>
+    </div>
+</div>

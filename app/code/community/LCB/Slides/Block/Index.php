@@ -35,4 +35,18 @@ class LCB_Slides_Block_Index extends Mage_Core_Block_Template
         $collection = Mage::getModel('slides/slides')->getAreaSlides($this->getNameInLayout());
         return $collection;
     }
+
+    /**
+     * @return int
+     */
+    public function getTransitionTime()
+    {
+        $areaModel = Mage::getModel('slides/areas')->load($this->getNameInLayout(), 'name');
+
+        if (!$areaModel->getId()) {
+            return 4000;
+        }
+
+        return (int) $areaModel->getTransitionTime();
+    }
 }

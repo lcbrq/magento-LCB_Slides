@@ -1,0 +1,8 @@
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addCss"><stylesheet>css/lcb/slides.css</stylesheet></action>
+            <action method="addJs"><script>lcb/slides.js</script></action>
+        </reference>
+    </default>
+</layout>
