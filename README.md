@@ -19,6 +19,8 @@ $slides = Mage::getModel('slides/slides')->getCollection()
 
 *2.0.0* Add visual editor
 
+*1.6.2* Adjustments for OpenMage 20.17.0
+
 *1.6.1* Add event/object prefix to slides collection
 
 *1.6.0* Add area description and format changelog
