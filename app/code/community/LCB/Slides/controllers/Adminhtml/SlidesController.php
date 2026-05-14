@@ -15,11 +15,6 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
         return $this;
     }
 
-    protected function _isAllowed()
-    {
-        return true;
-    }
-
     public function indexAction()
     {
         $this->_title($this->__("Slides"));

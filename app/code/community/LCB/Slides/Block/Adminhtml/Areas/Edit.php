@@ -36,7 +36,7 @@ class LCB_Slides_Block_Adminhtml_Areas_Edit extends Mage_Adminhtml_Block_Widget_
     public function getHeaderText()
     {
         if (Mage::registry("areas_data") && Mage::registry("areas_data")->getId()) {
-            return Mage::helper("slides")->__("Edit", $this->htmlEscape(Mage::registry("areas_data")->getId()));
+            return Mage::helper("slides")->__("Edit", $this->escapeHtml(Mage::registry("areas_data")->getId()));
         } else {
             return Mage::helper("slides")->__("Add");
         }
