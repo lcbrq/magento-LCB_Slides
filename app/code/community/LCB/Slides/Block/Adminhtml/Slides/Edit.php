@@ -38,7 +38,6 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit extends Mage_Adminhtml_Block_Widget
             function saveAndContinueEdit(){
                     editForm.submit($('edit_form').action+'back/edit/');
             }";
-        
     }
 
     public function getHeaderText()
@@ -63,7 +62,7 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit extends Mage_Adminhtml_Block_Widget
             return $this->getUrl('*/*/');
         }
     }
-    
+
     public function getVisualEditorUrl()
     {
         return $this->getUrl(

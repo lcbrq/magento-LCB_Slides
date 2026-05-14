@@ -4,7 +4,7 @@ Simple Magento/OpenMage slides management with category support
  
 ### Version
 
-#### 1.6.1
+#### 2.0.0
 
 ### Usage
 
@@ -16,6 +16,8 @@ $slides = Mage::getModel('slides/slides')->getCollection()
 ```
 
 ### Changelog
+
+*2.0.0* Add visual editor
 
 *1.6.1* Add event/object prefix to slides collection
 
