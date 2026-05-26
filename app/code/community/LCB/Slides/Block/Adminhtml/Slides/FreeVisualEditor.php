@@ -1,6 +1,6 @@
 <?php
 
-class LCB_Slides_Block_Adminhtml_Slides_VisualEditor extends Mage_Adminhtml_Block_Template
+class LCB_Slides_Block_Adminhtml_Slides_FreeVisualEditor extends Mage_Adminhtml_Block_Template
 {
     /**
      * @return LCB_Slides_Model_Slides|false
@@ -32,13 +32,13 @@ class LCB_Slides_Block_Adminhtml_Slides_VisualEditor extends Mage_Adminhtml_Bloc
      */
     protected function _toHtml()
     {
-        $this->setTemplate('lcb/slides/visual-editor.phtml');
+        $this->setTemplate('lcb/slides/free-visual-editor.phtml');
 
         return parent::_toHtml();
     }
 
     /**
-     * @return LCB_Slides_Block_Adminhtml_Slides_VisualEditor
+     * @return LCB_Slides_Block_Adminhtml_Slides_FreeVisualEditor
      */
     protected function _prepareLayout()
     {
@@ -46,9 +46,9 @@ class LCB_Slides_Block_Adminhtml_Slides_VisualEditor extends Mage_Adminhtml_Bloc
 
         if ($headBlock) {
             $headBlock->addCss('lcb/grapesjs/grapes.min.css');
-            $headBlock->addJs('lcb/grapesjs/grapes.min.js');
-            $headBlock->addJs('lcb/grapesjs/visual-editor-init-v2.js');
             $headBlock->addCss('lcb/grapesjs/visual-editor-free.css');
+
+            $headBlock->addJs('lcb/grapesjs/grapes.min.js');
             $headBlock->addJs('lcb/grapesjs/visual-editor-free.js');
         }
 

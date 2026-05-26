@@ -303,6 +303,40 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
         $this->renderLayout();
     }
 
+    public function freeVisualEditorAction()
+    {
+        $slideId = $this->getRequest()->getParam('id');
+
+        if (!$slideId) {
+            Mage::getSingleton('adminhtml/session')->addError(
+                Mage::helper('slides')->__('Unable to find slide.')
+            );
+
+            $this->_redirect('*/*/');
+            return;
+        }
+
+        $slideModel = Mage::getModel('slides/slides')->load($slideId);
+
+        if (!$slideModel->getId()) {
+            Mage::getSingleton('adminhtml/session')->addError(
+                Mage::helper('slides')->__('Unable to find slide.')
+            );
+
+            $this->_redirect('*/*/');
+            return;
+        }
+
+        Mage::register('current_slide', $slideModel);
+
+        $this->loadLayout();
+        $this->_setActiveMenu('slides/slides');
+        $this->_addContent(
+            $this->getLayout()->createBlock('slides/adminhtml_slides_freeVisualEditor')
+        );
+        $this->renderLayout();
+    }
+
     public function saveVisualContentAction()
     {
         $slideId = (int) $this->getRequest()->getParam('id');

@@ -3,6 +3,7 @@
         <reference name="head">
             <action method="addCss"><stylesheet>css/lcb/slides.css</stylesheet></action>
             <action method="addJs"><script>lcb/slides.js</script></action>
+            <action method="addCss"><stylesheet>css/lcb/slides-free.css</stylesheet></action>
         </reference>
     </default>
 </layout>

@@ -1,0 +1,122 @@
+/* FREE BANNER MODE - frontend */
+
+.lcb-slider .lcb-free-banner-root,
+.lcb-slider .lcb-free-banner-root * {
+    box-sizing: border-box;
+}
+
+.lcb-slider .lcb-free-banner-root {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+}
+
+.lcb-slider .lcb-free-banner-stage {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+}
+
+.lcb-slider .lcb-free-layer {
+    position: absolute;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.lcb-slider .lcb-free-heading,
+.lcb-slider .lcb-free-text {
+    margin: 0;
+    padding: 0;
+    color: #111;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.lcb-slider .lcb-free-heading {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.lcb-slider .lcb-free-text {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.lcb-slider .lcb-free-button,
+.lcb-slider .lcb-free-button:link,
+.lcb-slider .lcb-free-button:visited,
+.lcb-slider .lcb-free-button:hover,
+.lcb-slider .lcb-free-button:focus,
+.lcb-slider .lcb-free-button:active {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    padding: 12px 22px;
+    border-radius: 999px;
+    background: #111;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    white-space: normal;
+    box-sizing: border-box;
+}
+
+.lcb-slider .lcb-free-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 1024px) {
+    .lcb-slider .lcb-free-heading {
+        font-size: 42px;
+    }
+
+    .lcb-slider .lcb-free-text {
+        font-size: 19px;
+    }
+}
+
+@media (max-width: 480px) {
+    .lcb-slider .lcb-free-heading {
+        font-size: 34px;
+    }
+
+    .lcb-slider .lcb-free-text {
+        font-size: 18px;
+    }
+
+    .lcb-slider .lcb-free-button,
+    .lcb-slider .lcb-free-button:link,
+    .lcb-slider .lcb-free-button:visited,
+    .lcb-slider .lcb-free-button:hover,
+    .lcb-slider .lcb-free-button:focus,
+    .lcb-slider .lcb-free-button:active {
+        padding: 10px 16px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 390px) {
+    .lcb-slider .lcb-free-heading {
+        font-size: 30px;
+    }
+
+    .lcb-slider .lcb-free-text {
+        font-size: 16px;
+    }
+}
