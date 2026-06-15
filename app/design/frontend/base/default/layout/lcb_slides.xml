@@ -4,6 +4,7 @@
             <action method="addCss"><stylesheet>css/lcb/slides.css</stylesheet></action>
             <action method="addJs"><script>lcb/slides.js</script></action>
             <action method="addCss"><stylesheet>css/lcb/slides-free.css</stylesheet></action>
+            <action method="addJs"><script>lcb/slides-free-scale.js</script></action>
         </reference>
     </default>
 </layout>

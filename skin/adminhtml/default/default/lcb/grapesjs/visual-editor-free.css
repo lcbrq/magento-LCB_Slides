@@ -1,42 +1,20 @@
 /* FREE BANNER MODE - admin editor */
 
-.lcb-editor-mode-choice {
-    margin: 20px 0;
-    padding: 28px;
-    border: 1px solid #d6d6d6;
-    background: #fff;
-    text-align: center;
-}
-
-.lcb-editor-mode-choice h2 {
-    margin: 0 0 18px;
-    font-size: 22px;
-}
-
-.lcb-editor-mode-choice p {
-    margin: 0 0 24px;
-    color: #666;
-}
-
-.lcb-editor-mode-choice-actions {
+.lcb-free-editor-actions {
     display: flex;
-    gap: 16px;
-    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0 20px;
     flex-wrap: wrap;
 }
 
-.lcb-editor-mode-choice button {
-    min-width: 220px;
-    padding: 14px 22px;
-    border: 0;
-    border-radius: 4px;
-    background: #1979c3;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
+.lcb-free-editor-actions .scalable {
+    margin: 0;
 }
 
-.lcb-editor-mode-choice button:hover {
-    background: #145f99;
+.lcb-free-grapes-editor {
+    margin-top: 20px;
+    height: 700px;
+    border: 1px solid #d6d6d6;
+    background: #fff;
 }

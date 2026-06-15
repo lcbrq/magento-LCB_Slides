@@ -31,14 +31,14 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
         //     "name" => "text",
         // ));
 
-        $fieldset->addField("content_html", "textarea", array(
+        $fieldset->addField("content_html","textarea",array(
             'name'     => 'content_html',
             'label'    => Mage::helper('slides')->__('Slide Content HTML'),
             'title'    => Mage::helper('slides')->__('Slide Content HTML'),
             'required' => false,
         ));
 
-        $fieldset->addField("content_css", "textarea", array(
+        $fieldset->addField("content_css","textarea",array(
             'name'     => 'content_css',
             'label'    => Mage::helper('slides')->__('Slide Content CSS'),
             'title'    => Mage::helper('slides')->__('Slide Content CSS'),
@@ -74,9 +74,12 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
             'class' => 'validate-digits'
         ));
 
-        $data = Mage::getModel('slides/areas')->getCollection()->getData();
-        foreach ($data as $area) {
-            $areas[$area['id']] = $area['name'];
+        $areas = Mage::getModel('slides/areas')->toOptionArray();
+
+        if (!$areas) {
+            $areas = array(
+                '' => Mage::helper('slides')->__('No areas available')
+            );
         }
 
         if (!$this->getRequest()->getParam('category')) {

@@ -15,6 +15,11 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
         return $this;
     }
 
+    protected function _isAllowed()
+    {
+        return true;
+    }
+
     public function indexAction()
     {
         $this->_title($this->__("Slides"));
@@ -84,6 +89,8 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
 
         if ($postData) {
             try {
+                $categoryId = !empty($postData['category_id']) ? $postData['category_id'] : null;
+
                 if (isset($postData['stores']) && is_array($postData['stores'])) {
                     if (in_array('0', $postData['stores'])) {
                         $postData['store_id'] = '0';
@@ -93,7 +100,7 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                     unset($postData['stores']);
                 }
 
-                if ($postData['category_id']) {
+                if ($categoryId) {
                     $postData['type'] = LCB_Slides_Model_Resource_Slides::TYPE_CATEGORY;
                 } else {
                     $postData['type'] = LCB_Slides_Model_Resource_Slides::TYPE_GENERAL;
@@ -105,7 +112,7 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                     } else {
                         unset($postData['image']);
 
-                        if (isset($_FILES)) {
+                        if (isset($_FILES['image']['name'])) {
                             if ($_FILES['image']['name']) {
                                 if ($this->getRequest()->getParam("id")) {
                                     $model = Mage::getModel("slides/slides")->load($this->getRequest()->getParam("id"));
@@ -139,13 +146,13 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                     } else {
                         unset($postData['image_mobile']);
 
-                        if (isset($_FILES)) {
+                        if (isset($_FILES['image_mobile']['name'])) {
                             if ($_FILES['image_mobile']['name']) {
                                 if ($this->getRequest()->getParam("id")) {
                                     $model = Mage::getModel("slides/slides")->load($this->getRequest()->getParam("id"));
                                     if ($model->getData('image_mobile')) {
                                         $io = new Varien_Io_File();
-                                        $io->rm(Mage::getBaseDir('media') . DS . implode(DS, explode('/', $model->getData('image'))));
+                                        $io->rm(Mage::getBaseDir('media') . DS . implode(DS, explode('/', $model->getData('image_mobile'))));
                                     }
                                 }
                                 $path = Mage::getBaseDir('media') . DS . 'slides' . DS . 'mobile' . DS;
@@ -153,7 +160,7 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                                 $uploader->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
                                 $uploader->setAllowRenameFiles(false);
                                 $uploader->setFilesDispersion(false);
-                                $destFile = $path . $_FILES['image_mobile']['name'];
+                                $destFile = $path . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $_FILES['image_mobile']['name']);
                                 $filename = $uploader->getNewFileName($destFile);
                                 $uploader->save($path, $filename);
 
@@ -167,7 +174,9 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                     return;
                 }
 
-                $postData['options'] = json_encode($postData['options']);
+                $postData['options'] = json_encode(isset($postData['options']) && is_array($postData['options'])
+                    ? $postData['options']
+                    : array());
 
                 $model = Mage::getModel("slides/slides")
                         ->addData($postData)
@@ -177,9 +186,9 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                 Mage::getSingleton("adminhtml/session")->addSuccess(Mage::helper("adminhtml")->__("Slide was successfully saved"));
                 Mage::getSingleton("adminhtml/session")->setSlidesData(false);
 
-                if ($postData['category_id']) {
+                if ($categoryId) {
                     $category = Mage::getModel('slides/category')->load($this->getRequest()->getParam("id"), 'slide_id');
-                    $category->setCategoryId($postData['category_id']);
+                    $category->setCategoryId($categoryId);
                     $category->setSlideId($model->getId());
                     $category->save();
                 }
@@ -189,7 +198,7 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                     return;
                 }
 
-                if ($postData['category_id']) {
+                if ($categoryId) {
                     $this->_redirect("adminhtml/catalog_category/");
                 } else {
                     $this->_redirect("*/*/");
@@ -282,30 +291,13 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
             return;
         }
 
-        $slideModel = Mage::getModel('slides/slides')->load($slideId);
-
-        if (!$slideModel->getId()) {
-            Mage::getSingleton('adminhtml/session')->addError(
-                Mage::helper('slides')->__('Unable to find slide.')
-            );
-
-            $this->_redirect('*/*/');
-            return;
-        }
-
-        Mage::register('current_slide', $slideModel);
-
-        $this->loadLayout();
-        $this->_setActiveMenu('cms/slides/slides');
-        $this->_addContent(
-            $this->getLayout()->createBlock('slides/adminhtml_slides_visualEditor')
-        );
-        $this->renderLayout();
+        $this->_redirect('*/*/freeVisualEditor', array('id' => $slideId));
+        return;
     }
 
     public function freeVisualEditorAction()
     {
-        $slideId = $this->getRequest()->getParam('id');
+        $slideId = (int) $this->getRequest()->getParam('id');
 
         if (!$slideId) {
             Mage::getSingleton('adminhtml/session')->addError(
@@ -373,6 +365,11 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
             );
         } catch (Exception $e) {
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+        }
+
+        if ($this->getRequest()->getParam('back')) {
+            $this->_redirect('*/*/freeVisualEditor', array('id' => $slideId));
+            return;
         }
 
         $this->_redirect('*/*/edit', array('id' => $slideId));
