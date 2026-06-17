@@ -31,14 +31,14 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
         //     "name" => "text",
         // ));
 
-        $fieldset->addField("content_html","textarea",array(
+        $fieldset->addField("content_html", "textarea", array(
             'name'     => 'content_html',
             'label'    => Mage::helper('slides')->__('Slide Content HTML'),
             'title'    => Mage::helper('slides')->__('Slide Content HTML'),
             'required' => false,
         ));
 
-        $fieldset->addField("content_css","textarea",array(
+        $fieldset->addField("content_css", "textarea", array(
             'name'     => 'content_css',
             'label'    => Mage::helper('slides')->__('Slide Content CSS'),
             'title'    => Mage::helper('slides')->__('Slide Content CSS'),

@@ -40,13 +40,12 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit extends Mage_Adminhtml_Block_Widget
             function saveAndContinueEdit(){
                     editForm.submit($('edit_form').action+'back/edit/');
             }";
-        
     }
 
     public function getHeaderText()
     {
         if (Mage::registry("slides_data") && Mage::registry("slides_data")->getId()) {
-            return Mage::helper("slides")->__("Edit", $this->htmlEscape(Mage::registry("slides_data")->getName()));
+            return Mage::helper("slides")->__("Edit", $this->escapeHtml(Mage::registry("slides_data")->getName()));
         } else {
             return Mage::helper("slides")->__("Add");
         }
@@ -65,7 +64,7 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit extends Mage_Adminhtml_Block_Widget
             return $this->getUrl('*/*/');
         }
     }
-    
+
     public function getFreeVisualEditorUrl()
     {
         return $this->getUrl(
