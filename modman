@@ -1,9 +1,10 @@
 app/code/community/LCB/Slides
 app/design/adminhtml/default/default/layout/lcb_slides.xml
 app/design/adminhtml/default/default/template/lcb/slides
+app/design/frontend/base/default/layout/lcb_slides.xml
 app/design/frontend/base/default/template/lcb/slides
 app/locale/pl_PL/LCB_Slides.csv
 app/etc/modules/LCB_Slides.xml
-js/lcb/slides.js
-js/lcb/grapesjs
-skin/adminhtml/default/default/lcb/grapesjs/grapes.min.css
+js/lcb
+skin/adminhtml/default/default/lcb/grapesjs
+skin/frontend/base/default/css/lcb
