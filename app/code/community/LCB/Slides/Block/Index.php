@@ -49,4 +49,27 @@ class LCB_Slides_Block_Index extends Mage_Core_Block_Template
 
         return (int) $areaModel->getTransitionTime();
     }
+
+    /**
+     * Return media URL only for an existing image file.
+     *
+     * @param string $imagePath
+     * @return string
+     */
+    public function getSlideMediaImageUrl($imagePath)
+    {
+        $imagePath = ltrim(trim((string) $imagePath), '/');
+
+        if ($imagePath === '') {
+            return '';
+        }
+
+        $filePath = Mage::getBaseDir('media') . DS . str_replace('/', DS, $imagePath);
+
+        if (!is_file($filePath)) {
+            return '';
+        }
+
+        return Mage::getBaseUrl('media') . $imagePath;
+    }
 }

@@ -6,26 +6,30 @@
         desktop: {
             key: 'desktop',
             attrKey: 'desktop',
-            width: 1152,
-            height: 352
+            width: BASE_GRID_WIDTH,
+            height: BASE_GRID_HEIGHT,
+            maxWidth: null
         },
         tablet: {
             key: 'tablet',
             attrKey: 'tablet',
             width: 948,
-            height: 454
+            height: 454,
+            maxWidth: 1024
         },
         mobileLarge: {
             key: 'mobileLarge',
             attrKey: 'mobile-large',
             width: 480,
-            height: 476
+            height: 912,
+            maxWidth: 480
         },
         mobileSmall: {
             key: 'mobileSmall',
             attrKey: 'mobile-small',
             width: 274,
-            height: 520
+            height: 520,
+            maxWidth: 390
         }
     };
     var DEVICE_LAYOUT_ORDER = ['desktop', 'tablet', 'mobileLarge', 'mobileSmall'];
@@ -200,15 +204,15 @@
     }
 
     function getResponsiveDevice(availableWidth) {
-        if (availableWidth <= 390) {
+        if (availableWidth <= DEVICE_LAYOUTS.mobileSmall.maxWidth) {
             return DEVICE_LAYOUTS.mobileSmall;
         }
 
-        if (availableWidth <= 480) {
+        if (availableWidth <= DEVICE_LAYOUTS.mobileLarge.maxWidth) {
             return DEVICE_LAYOUTS.mobileLarge;
         }
 
-        if (availableWidth <= 1024) {
+        if (availableWidth <= DEVICE_LAYOUTS.tablet.maxWidth) {
             return DEVICE_LAYOUTS.tablet;
         }
 
@@ -381,24 +385,14 @@
         return (basePosition / baseRange) * currentRange;
     }
 
-    function adaptLayer(layer, currentWidth, currentHeight, layout) {
+    function adaptLayer(layer, layout) {
         var baseLeft,
-            baseTop,
-            baseWidth,
-            baseHeight,
-            currentRect,
-            currentLayerWidth,
-            currentLayerHeight,
-            left,
-            top;
+            baseTop;
 
         ensureLayerLayoutState(layer);
 
         baseLeft = getLayerLayoutNumber(layer, layout.key, 'left');
         baseTop = getLayerLayoutNumber(layer, layout.key, 'top');
-        baseWidth = getLayerLayoutNumber(layer, layout.key, 'width');
-        baseHeight = getLayerLayoutNumber(layer, layout.key, 'height');
-
         if (baseLeft === null) {
             baseLeft = getLayerLayoutNumber(layer, 'desktop', 'left') || 0;
         }
@@ -407,24 +401,9 @@
             baseTop = getLayerLayoutNumber(layer, 'desktop', 'top') || 0;
         }
 
-        if (baseWidth === null) {
-            baseWidth = getLayerLayoutNumber(layer, 'desktop', 'width') || 0;
-        }
-
-        if (baseHeight === null) {
-            baseHeight = getLayerLayoutNumber(layer, 'desktop', 'height') || 0;
-        }
-
-        currentRect = getRect(layer);
-        currentLayerWidth = currentRect && currentRect.width ? currentRect.width : baseWidth;
-        currentLayerHeight = currentRect && currentRect.height ? currentRect.height : baseHeight;
-
-        left = projectPosition(baseLeft, layout.width, currentWidth, baseWidth, currentLayerWidth);
-        top = projectPosition(baseTop, layout.height, currentHeight, baseHeight, currentLayerHeight);
-
         setStyle(layer, 'position', 'absolute', 'important');
-        setStyle(layer, 'left', normalizeNumber(left) + 'px', 'important');
-        setStyle(layer, 'top', normalizeNumber(top) + 'px', 'important');
+        setStyle(layer, 'left', normalizeNumber(baseLeft) + 'px', 'important');
+        setStyle(layer, 'top', normalizeNumber(baseTop) + 'px', 'important');
         setStyle(layer, 'box-sizing', 'border-box', 'important');
     }
 
@@ -442,18 +421,18 @@
         setStyle(root, 'transform', 'none', 'important');
     }
 
-    function prepareStage(stage, visualWidth, visualHeight) {
+    function prepareStage(stage, layout, visualScale) {
         setStyle(stage, 'position', 'relative', 'important');
         setStyle(stage, 'left', '0', 'important');
         setStyle(stage, 'top', '0', 'important');
         setStyle(stage, 'display', 'block', 'important');
-        setStyle(stage, 'width', normalizeNumber(visualWidth) + 'px', 'important');
-        setStyle(stage, 'height', normalizeNumber(visualHeight) + 'px', 'important');
-        setStyle(stage, 'min-height', normalizeNumber(visualHeight) + 'px', 'important');
+        setStyle(stage, 'width', normalizeNumber(layout.width) + 'px', 'important');
+        setStyle(stage, 'height', normalizeNumber(layout.height) + 'px', 'important');
+        setStyle(stage, 'min-height', normalizeNumber(layout.height) + 'px', 'important');
         setStyle(stage, 'max-width', 'none', 'important');
         setStyle(stage, 'overflow', 'hidden', 'important');
         setStyle(stage, 'box-sizing', 'border-box', 'important');
-        setStyle(stage, 'transform', 'none', 'important');
+        setStyle(stage, 'transform', 'scale(' + normalizeNumber(visualScale) + ')', 'important');
         setStyle(stage, 'transform-origin', '0 0', 'important');
     }
 
@@ -461,6 +440,7 @@
         var stage,
             availableWidth,
             layout,
+            visualScale,
             visualHeight,
             layers,
             i;
@@ -480,24 +460,25 @@
 
         availableWidth = getAvailableWidth(root);
         layout = getResponsiveDevice(availableWidth);
-        visualHeight = getAvailableHeight(root, availableWidth, layout.width, layout.height);
+        visualScale = availableWidth / layout.width;
+        visualHeight = layout.height * visualScale;
 
         prepareRoot(root, visualHeight);
-        prepareStage(stage, availableWidth, visualHeight);
+        prepareStage(stage, layout, visualScale);
 
         layers = stage.querySelectorAll('.lcb-free-layer');
 
         for (i = 0; i < layers.length; i++) {
-            adaptLayer(layers[i], availableWidth, visualHeight, layout);
+            adaptLayer(layers[i], layout);
         }
 
         root.setAttribute('data-lcb-grid-name', layout.key);
         root.setAttribute('data-lcb-grid-width', layout.width);
         root.setAttribute('data-lcb-grid-height', layout.height);
         root.setAttribute('data-lcb-available-width', normalizeNumber(availableWidth));
-        root.setAttribute('data-lcb-scale', '1');
-        root.setAttribute('data-lcb-position-scale-x', normalizeNumber(availableWidth / layout.width));
-        root.setAttribute('data-lcb-position-scale-y', normalizeNumber(visualHeight / layout.height));
+        root.setAttribute('data-lcb-scale', normalizeNumber(visualScale));
+        root.setAttribute('data-lcb-position-scale-x', normalizeNumber(visualScale));
+        root.setAttribute('data-lcb-position-scale-y', normalizeNumber(visualScale));
         root.setAttribute('data-lcb-visual-height', normalizeNumber(visualHeight));
     }
 

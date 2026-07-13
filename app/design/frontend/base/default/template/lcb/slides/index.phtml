@@ -4,16 +4,55 @@
     <?php return; ?>
 <?php endif; ?>
 <?php $transitionTime = (int) $this->getTransitionTime(); ?>
-<div class="lcb-slider" id="lcb-slider-<?php echo $this->escapeHtml($this->getNameInLayout()); ?>"  data-transition-time="<?php echo $transitionTime ? $transitionTime : 4000; ?>">
+<?php
+$sliderClasses = array('lcb-slider');
+
+foreach ($slides as $slideForClass) {
+    if (strpos((string) $slideForClass->getContentHtml(), 'lcb-free-banner-root') !== false) {
+        $sliderClasses[] = 'has-free-banner-slides';
+        break;
+    }
+}
+?>
+<div class="<?php echo $this->escapeHtml(implode(' ', $sliderClasses)); ?>" id="lcb-slider-<?php echo $this->escapeHtml($this->getNameInLayout()); ?>"  data-transition-time="<?php echo $transitionTime ? $transitionTime : 4000; ?>">
     <div class="slides">
         <?php $slideIndex = 0; ?>
         <?php foreach ($slides as $slide): ?>
             <?php
             $imageUrl = '';
+            $tabletImageUrl = '';
             $mobileImageUrl = '';
+            $mobileSmallImageUrl = '';
+            $contentHtml = (string) $slide->getContentHtml();
+            $slideClasses = array('slide');
+            $hasFreeBannerContent = strpos($contentHtml, 'lcb-free-banner-root') !== false;
 
-            if ($slide->getImage()) {
-                $imageUrl = Mage::getBaseUrl('media') . ltrim($slide->getImage(), '/');
+            if ($slideIndex === 0) {
+                $slideClasses[] = 'is-active';
+            }
+
+            if ($hasFreeBannerContent) {
+                $slideClasses[] = 'has-free-banner-content';
+            }
+
+            $imageUrl = $this->getSlideMediaImageUrl($slide->getImage());
+
+            $tabletImage = '';
+
+            if ($slide->getData('tablet_image')) {
+                $tabletImage = $slide->getData('tablet_image');
+            } elseif ($slide->getData('image_tablet')) {
+                $tabletImage = $slide->getData('image_tablet');
+            } elseif ($slide->getTabletImage()) {
+                $tabletImage = $slide->getTabletImage();
+            }
+
+            if ($tabletImage) {
+                $tabletImageUrl = $this->getSlideMediaImageUrl($tabletImage);
+            }
+
+            if ($tabletImageUrl) {
+                $slideClasses[] = 'has-tablet-image';
             }
 
             $mobileImage = '';
@@ -26,23 +65,52 @@
                 $mobileImage = $slide->getMobileImage();
             }
 
-            if ($mobileImage) {
-                $mobileImageUrl = Mage::getBaseUrl('media') . ltrim($mobileImage, '/');
+            $mobileImageUrl = $this->getSlideMediaImageUrl($mobileImage);
+
+            $mobileSmallImage = '';
+
+            if ($slide->getData('mobile_small_image')) {
+                $mobileSmallImage = $slide->getData('mobile_small_image');
+            } elseif ($slide->getData('image_mobile_small')) {
+                $mobileSmallImage = $slide->getData('image_mobile_small');
+            } elseif ($slide->getMobileSmallImage()) {
+                $mobileSmallImage = $slide->getMobileSmallImage();
             }
+
+            $mobileSmallImageUrl = $this->getSlideMediaImageUrl($mobileSmallImage);
+
+            $fallbackImageUrl = $imageUrl ? $imageUrl : ($tabletImageUrl ? $tabletImageUrl : ($mobileImageUrl ? $mobileImageUrl : $mobileSmallImageUrl));
+            $tabletSourceUrl = $tabletImageUrl ? $tabletImageUrl : $imageUrl;
+            $mobileLargeSourceUrl = $mobileImageUrl ? $mobileImageUrl : ($mobileSmallImageUrl ? $mobileSmallImageUrl : ($tabletImageUrl ? $tabletImageUrl : $imageUrl));
+            $mobileSmallSourceUrl = $mobileSmallImageUrl ? $mobileSmallImageUrl : ($mobileImageUrl ? $mobileImageUrl : ($tabletImageUrl ? $tabletImageUrl : $imageUrl));
             ?>
 
-            <div class="slide<?php if ($slideIndex === 0): ?> is-active<?php endif; ?>">
-                <?php if ($imageUrl): ?>
+            <div class="<?php echo $this->escapeHtml(implode(' ', $slideClasses)); ?>">
+                <?php if ($fallbackImageUrl): ?>
                     <picture>
-                        <?php if ($mobileImageUrl): ?>
+                        <?php if ($mobileSmallSourceUrl): ?>
                             <source
-                                media="(max-width: 480px)"
-                                srcset="<?php echo $this->escapeUrl($mobileImageUrl); ?>"
+                                media="(max-width: 390px)"
+                                srcset="<?php echo $this->escapeUrl($mobileSmallSourceUrl); ?>"
+                            />
+                        <?php endif; ?>
+
+                        <?php if ($mobileLargeSourceUrl): ?>
+                            <source
+                                media="(min-width: 391px) and (max-width: 480px)"
+                                srcset="<?php echo $this->escapeUrl($mobileLargeSourceUrl); ?>"
+                            />
+                        <?php endif; ?>
+
+                        <?php if ($tabletSourceUrl): ?>
+                            <source
+                                media="(min-width: 481px) and (max-width: 1024px)"
+                                srcset="<?php echo $this->escapeUrl($tabletSourceUrl); ?>"
                             />
                         <?php endif; ?>
 
                         <img
-                            src="<?php echo $this->escapeUrl($imageUrl); ?>"
+                            src="<?php echo $this->escapeUrl($fallbackImageUrl); ?>"
                             alt="<?php echo $this->escapeHtml($slide->getName()); ?>"
                             class="slide-image"
                         />
@@ -51,11 +119,11 @@
 
                 <?php $contentWrapperId = 'slide-content-html-' . (int) $slide->getId(); ?>
 
-                <?php if ($slide->getContentHtml()): ?>
+                <?php if ($contentHtml): ?>
                     <div class="slide-content-html" id="<?php echo $this->escapeHtml($contentWrapperId); ?>">
                         <div class="visual-banner-wrapper">
                             <div class="visual-banner-inner">
-                                <?php echo Mage::helper('slides/content')->sanitizeHtml($slide->getContentHtml()); ?>
+                                <?php echo Mage::helper('slides/content')->sanitizeHtml($contentHtml); ?>
                             </div>
                         </div>
                     </div>

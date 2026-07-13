@@ -18,3 +18,17 @@
     border: 1px solid #d6d6d6;
     background: #fff;
 }
+
+.lcb-free-image-upload-button {
+    display: inline-block;
+    padding: 7px 14px;
+    border: 0;
+    background: #3b97e3;
+    color: #fff;
+    cursor: pointer;
+}
+
+.lcb-free-image-upload-button[disabled] {
+    opacity: .65;
+    cursor: default;
+}

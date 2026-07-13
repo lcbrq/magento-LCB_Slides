@@ -14,6 +14,10 @@
     min-height: 400px;
 }
 
+.lcb-slider.has-free-banner-slides .slides {
+    min-height: 0;
+}
+
 .slide {
     position: absolute;
     inset: 0;
@@ -29,12 +33,27 @@
     visibility: visible;
 }
 
+.slide.has-free-banner-content {
+    aspect-ratio: 1152 / 352;
+}
+
+.slide.has-free-banner-content picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
 .slide-image {
     display: block;
     width: 100%;
     height: 400px;
     object-fit: cover;
     object-position: center center;
+}
+
+.slide.has-free-banner-content .slide-image {
+    height: 100%;
+    object-fit: cover;
 }
 
 .dots {
@@ -93,6 +112,10 @@
 .slide-content-html .visual-banner-inner,
 .slide-content-html .visual-banner-inner * {
     pointer-events: auto;
+}
+
+.slide.has-free-banner-content .slide-content-html .visual-banner-wrapper {
+    padding: 0;
 }
 
 /* MINIMALNA BAZA TECHNICZNA ELEMENTÓW Z EDYTORA */
@@ -206,6 +229,10 @@
         height: 470px;
     }
 
+    .slide.has-free-banner-content {
+        aspect-ratio: 948 / 454;
+    }
+
     .dots {
         bottom: 12px;
         gap: 8px;
@@ -244,6 +271,11 @@
 
     .slide-image {
         height: 500px;
+        object-fit: cover;
+    }
+
+    .slide.has-free-banner-content {
+        aspect-ratio: 480 / 912;
     }
 
     .slide-content-html .visual-banner-wrapper {
@@ -289,6 +321,10 @@
         height: 520px;
     }
 
+    .slide.has-free-banner-content {
+        aspect-ratio: 274 / 520;
+    }
+
     .slide-content-html .visual-banner-wrapper {
         padding: 8px 8px 12px;
     }
@@ -313,6 +349,10 @@
 
     .slide-image {
         height: 540px;
+    }
+
+    .slide.has-free-banner-content {
+        aspect-ratio: 274 / 520;
     }
 
     .slide-content-html .visual-banner-wrapper {

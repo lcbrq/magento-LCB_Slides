@@ -14,6 +14,12 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
         $form = new Varien_Data_Form();
         $this->setForm($form);
         $fieldset = $form->addFieldset("slide_setting", array("legend" => Mage::helper("slides")->__("Primary settings")));
+        $canvasRecommendations = array(
+            'desktop' => '1152 x 352 px',
+            'tablet' => '948 x 454 px',
+            'mobile_large' => '480 x 912 px',
+            'mobile_small' => '274 x 520 px',
+        );
 
         $fieldset->addField('enabled', 'select', array(
             'label' => Mage::helper('slides')->__('Enable'),
@@ -59,13 +65,25 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
         $fieldset->addField('image', 'image', array(
             'label' => Mage::helper('slides')->__('Image'),
             'name' => 'image',
-            'note' => '(*.jpg, *.png, *.gif)',
+            'note' => Mage::helper('slides')->__('*.jpg, *.png, *.gif, Zalecany %s', $canvasRecommendations['desktop']),
+        ));
+
+        $fieldset->addField('image_tablet', 'image', array(
+            'label' => Mage::helper('slides')->__('Image (tablet)'),
+            'name' => 'image_tablet',
+            'note' => Mage::helper('slides')->__('Zalecany %s', $canvasRecommendations['tablet']),
         ));
 
         $fieldset->addField('image_mobile', 'image', array(
-            'label' => Mage::helper('slides')->__('Image (mobile)'),
+            'label' => Mage::helper('slides')->__('Image (mobile large)'),
             'name' => 'image_mobile',
-            'note' => Mage::helper('slides')->__('Possible replacement for mobiles'),
+            'note' => Mage::helper('slides')->__('Zalecany %s', $canvasRecommendations['mobile_large']),
+        ));
+
+        $fieldset->addField('image_mobile_small', 'image', array(
+            'label' => Mage::helper('slides')->__('Image (mobile small)'),
+            'name' => 'image_mobile_small',
+            'note' => Mage::helper('slides')->__('Zalecany %s', $canvasRecommendations['mobile_small']),
         ));
 
         $fieldset->addField('position', 'text', array(

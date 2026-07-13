@@ -41,6 +41,11 @@
                 <input type="hidden" name="content_css" id="lcb-free-grapes-css" value="" />
                 <input type="hidden" id="lcb-free-grapes-initial-html" value="<?php echo $this->escapeHtml($this->getSlideContentHtml()); ?>" />
                 <input type="hidden" id="lcb-free-grapes-initial-css" value="<?php echo $this->escapeHtml($this->getSlideContentCss()); ?>" />
+                <input type="hidden" id="lcb-free-grapes-image-url" value="<?php echo $this->escapeHtml($this->getSlideImageUrl()); ?>" />
+                <input type="hidden" id="lcb-free-grapes-tablet-image-url" value="<?php echo $this->escapeHtml($this->getSlideTabletImageUrl()); ?>" />
+                <input type="hidden" id="lcb-free-grapes-mobile-image-url" value="<?php echo $this->escapeHtml($this->getSlideMobileImageUrl()); ?>" />
+                <input type="hidden" id="lcb-free-grapes-mobile-small-image-url" value="<?php echo $this->escapeHtml($this->getSlideMobileSmallImageUrl()); ?>" />
+                <input type="hidden" id="lcb-free-grapes-free-image-upload-url" value="<?php echo $this->escapeHtml($this->getUploadFreeImageUrl()); ?>" />
             </form>
 
             <div id="lcb-free-grapes-editor" class="lcb-free-grapes-editor"></div>

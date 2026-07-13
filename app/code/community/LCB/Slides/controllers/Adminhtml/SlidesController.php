@@ -136,6 +136,40 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                 }
 
                 try {
+                    if (isset($postData['image_tablet']['delete']) && $postData['image_tablet']['delete']) {
+                        $postData['image_tablet'] = '';
+                    } else {
+                        unset($postData['image_tablet']);
+
+                        if (isset($_FILES['image_tablet']['name'])) {
+                            if ($_FILES['image_tablet']['name']) {
+                                if ($this->getRequest()->getParam("id")) {
+                                    $model = Mage::getModel("slides/slides")->load($this->getRequest()->getParam("id"));
+                                    if ($model->getData('image_tablet')) {
+                                        $io = new Varien_Io_File();
+                                        $io->rm(Mage::getBaseDir('media') . DS . implode(DS, explode('/', $model->getData('image_tablet'))));
+                                    }
+                                }
+                                $path = Mage::getBaseDir('media') . DS . 'slides' . DS . 'tablet' . DS;
+                                $uploader = new Varien_File_Uploader('image_tablet');
+                                $uploader->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
+                                $uploader->setAllowRenameFiles(false);
+                                $uploader->setFilesDispersion(false);
+                                $destFile = $path . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $_FILES['image_tablet']['name']);
+                                $filename = $uploader->getNewFileName($destFile);
+                                $uploader->save($path, $filename);
+
+                                $postData['image_tablet'] = 'slides/tablet/' . $filename;
+                            }
+                        }
+                    }
+                } catch (Exception $e) {
+                    Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                    $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+                    return;
+                }
+
+                try {
                     if (isset($postData['image_mobile']['delete']) && $postData['image_mobile']['delete']) {
                         $postData['image_mobile'] = '';
                     } else {
@@ -160,6 +194,42 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
                                 $uploader->save($path, $filename);
 
                                 $postData['image_mobile'] = 'slides/mobile/' . $filename;
+                            }
+                        }
+                    }
+                } catch (Exception $e) {
+                    Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                    $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+                    return;
+                }
+
+                try {
+                    if (isset($postData['image_mobile_small']['delete']) && $postData['image_mobile_small']['delete']) {
+                        $postData['image_mobile_small'] = '';
+                    } else {
+                        unset($postData['image_mobile_small']);
+
+                        if (isset($_FILES['image_mobile_small']['name'])) {
+                            if ($_FILES['image_mobile_small']['name']) {
+                                if ($this->getRequest()->getParam("id")) {
+                                    $model = Mage::getModel("slides/slides")->load($this->getRequest()->getParam("id"));
+                                    if ($model->getData('image_mobile_small')) {
+                                        $io = new Varien_Io_File();
+                                        $io->rm(Mage::getBaseDir('media') . DS . implode(DS, explode('/', $model->getData('image_mobile_small'))));
+                                    }
+                                }
+                                $path = Mage::getBaseDir('media') . DS . 'slides' . DS . 'mobile-small' . DS;
+                                $io = new Varien_Io_File();
+                                $io->checkAndCreateFolder($path);
+                                $uploader = new Varien_File_Uploader('image_mobile_small');
+                                $uploader->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
+                                $uploader->setAllowRenameFiles(false);
+                                $uploader->setFilesDispersion(false);
+                                $destFile = $path . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $_FILES['image_mobile_small']['name']);
+                                $filename = $uploader->getNewFileName($destFile);
+                                $uploader->save($path, $filename);
+
+                                $postData['image_mobile_small'] = 'slides/mobile-small/' . $filename;
                             }
                         }
                     }
@@ -368,5 +438,61 @@ class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Ac
         }
 
         $this->_redirect('*/*/edit', array('id' => $slideId));
+    }
+
+    public function uploadFreeImageAction()
+    {
+        if (!$this->_validateFormKey()) {
+            $this->_sendJsonResponse(array(
+                'success' => false,
+                'message' => Mage::helper('slides')->__('Invalid form key.')
+            ));
+            return;
+        }
+
+        try {
+            if (!isset($_FILES['image']['name']) || !$_FILES['image']['name']) {
+                throw new Exception(Mage::helper('slides')->__('Please choose an image file.'));
+            }
+
+            $path = Mage::getBaseDir('media') . DS . 'slides' . DS . 'free' . DS;
+            $io = new Varien_Io_File();
+            $io->checkAndCreateFolder($path);
+
+            $fileName = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $_FILES['image']['name']);
+
+            if ($fileName === '' || $fileName === '.' || $fileName === '..') {
+                throw new Exception(Mage::helper('slides')->__('Invalid image file name.'));
+            }
+
+            $uploader = new Varien_File_Uploader('image');
+            $uploader->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
+            $uploader->setAllowRenameFiles(false);
+            $uploader->setFilesDispersion(false);
+
+            $filename = $uploader->getNewFileName($path . $fileName);
+            $uploader->save($path, $filename);
+
+            $relativePath = 'slides/free/' . $filename;
+
+            $this->_sendJsonResponse(array(
+                'success' => true,
+                'url' => Mage::getBaseUrl('media') . $relativePath,
+                'path' => $relativePath
+            ));
+        } catch (Exception $e) {
+            $this->_sendJsonResponse(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+
+    protected function _sendJsonResponse($response)
+    {
+        $this->getResponse()
+            ->clearHeaders()
+            ->setHeader('Content-Type', 'application/json', true)
+            ->setBody(Mage::helper('core')->jsonEncode($response));
     }
 }
