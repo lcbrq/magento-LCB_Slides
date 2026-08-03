@@ -9,4 +9,5 @@ js/lcb/grapesjs
 js/lcb/slides.js
 js/lcb/slides-free-scale.js
 skin/adminhtml/default/default/lcb/grapesjs
-skin/frontend/base/default/css/lcb
+skin/frontend/base/default/css/lcb/slides.css
+skin/frontend/base/default/css/lcb/slides-free.css
