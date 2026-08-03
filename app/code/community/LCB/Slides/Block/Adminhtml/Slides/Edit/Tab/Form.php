@@ -32,10 +32,10 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
             "name" => "name",
         ));
 
-        // $fieldset->addField("text", "textarea", array(
-        //     "label" => Mage::helper("slides")->__("Text"),
-        //     "name" => "text",
-        // ));
+        $fieldset->addField("text", "textarea", array(
+            "label" => Mage::helper("slides")->__("Text"),
+            "name" => "text",
+        ));
 
         $fieldset->addField("content_html", "textarea", array(
             'name'     => 'content_html',
@@ -51,16 +51,16 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
             'required' => false,
         ));
 
-        // $fieldset->addField("url", "text", array(
-        //     "label" => Mage::helper("slides")->__("Link"),
-        //     "name" => "url",
-        // ));
+        $fieldset->addField("url", "text", array(
+            "label" => Mage::helper("slides")->__("Link"),
+            "name" => "url",
+        ));
 
-        // $fieldset->addField('target', 'select', array(
-        //     'label' => Mage::helper('slides')->__('Open in'),
-        //     'values' => Mage::getModel('slides/slides')->getTargetOptions(),
-        //     'name' => 'target'
-        // ));
+        $fieldset->addField('target', 'select', array(
+            'label' => Mage::helper('slides')->__('Open in'),
+            'values' => Mage::getModel('slides/slides')->getTargetOptions(),
+            'name' => 'target'
+        ));
 
         $fieldset->addField('image', 'image', array(
             'label' => Mage::helper('slides')->__('Image'),
