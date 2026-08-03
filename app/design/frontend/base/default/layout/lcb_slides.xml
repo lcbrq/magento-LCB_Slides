@@ -1,10 +1,16 @@
-<layout version="0.1.0">
-    <default>
+<layout version="2.0.0">
+
+    <lcb_slides>
         <reference name="head">
             <action method="addCss"><stylesheet>css/lcb/slides.css</stylesheet></action>
             <action method="addJs"><script>lcb/slides.js</script></action>
             <action method="addCss"><stylesheet>css/lcb/slides-free.css</stylesheet></action>
             <action method="addJs"><script>lcb/slides-free-scale.js</script></action>
         </reference>
-    </default>
+    </lcb_slides>
+
+    <cms_index_index>
+        <update handle="lcb_slides"/>
+    </cms_index_index>
+
 </layout>
