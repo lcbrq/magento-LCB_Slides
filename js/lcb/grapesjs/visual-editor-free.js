@@ -1490,6 +1490,7 @@ document.observe('dom:loaded', function () {
         '.lcb-free-heading,.lcb-free-text{margin:0;padding:0;color:#111;font-family:Arial,Helvetica,sans-serif;overflow-wrap:anywhere;word-break:normal;}',
         '.lcb-free-heading{font-size:48px;font-weight:700;line-height:1.1;}',
         '.lcb-free-text{font-size:20px;font-weight:400;line-height:1.4;}',
+        '.lcb-free-copy-text{cursor:pointer;}',
 
         '.lcb-free-button,.lcb-free-button:link,.lcb-free-button:visited,.lcb-free-button:hover,.lcb-free-button:focus,.lcb-free-button:active{display:inline-flex;align-items:center;justify-content:center;padding:12px 22px;border-radius:999px;background:#111;color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:700;line-height:1.2;text-align:center;text-decoration:none;white-space:normal;box-sizing:border-box;}',
 
@@ -1595,6 +1596,11 @@ document.observe('dom:loaded', function () {
                     id: 'lcb-free-text',
                     label: 'Free Text',
                     content: '<div data-gjs-type="lcb-free-text" class="lcb-free-layer lcb-free-text" style="left:120px;top:150px;position:absolute;">Tekst banera</div>'
+                },
+                {
+                    id: 'lcb-free-copy-text',
+                    label: 'Copy Text',
+                    content: '<div data-gjs-type="lcb-free-text" class="lcb-free-layer lcb-free-text lcb-free-copy-text" style="left:120px;top:150px;position:absolute;">Kod promocyjny</div>'
                 },
                 {
                     id: 'lcb-free-button',

@@ -491,6 +491,67 @@
         }
     }
 
+    function findCopyTextElement(node) {
+        var className;
+
+        while (node && node !== document) {
+            className = node.nodeType === 1 && node.getAttribute ? node.getAttribute('class') : '';
+
+            if ((' ' + (className || '') + ' ').indexOf(' lcb-free-copy-text ') !== -1) {
+                return node;
+            }
+
+            node = node.parentNode;
+        }
+
+        return null;
+    }
+
+    function copyTextFallback(value) {
+        var textarea = document.createElement('textarea');
+
+        textarea.value = value;
+        textarea.setAttribute('readonly', 'readonly');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            document.execCommand('copy');
+        } catch (ignore) {
+        }
+
+        document.body.removeChild(textarea);
+    }
+
+    function copyText(value) {
+        if (window.navigator && navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(value).then(null, function () {
+                copyTextFallback(value);
+            });
+            return;
+        }
+
+        copyTextFallback(value);
+    }
+
+    function handleCopyText(event) {
+        var currentEvent = event || window.event,
+            element = findCopyTextElement(currentEvent.target || currentEvent.srcElement),
+            value;
+
+        if (!element) {
+            return;
+        }
+
+        value = (element.textContent || element.innerText || '').replace(/^\s+|\s+$/g, '');
+
+        if (value) {
+            copyText(value);
+        }
+    }
+
     function runScale() {
         scaleAllFreeBanners();
         window.setTimeout(scaleAllFreeBanners, 50);
@@ -544,8 +605,10 @@
         window.addEventListener('load', runScale);
         window.addEventListener('resize', runScale);
         window.addEventListener('orientationchange', runScale);
+        document.addEventListener('click', handleCopyText);
     } else if (window.attachEvent) {
         window.attachEvent('onload', runScale);
         window.attachEvent('onresize', runScale);
+        document.attachEvent('onclick', handleCopyText);
     }
 })();
