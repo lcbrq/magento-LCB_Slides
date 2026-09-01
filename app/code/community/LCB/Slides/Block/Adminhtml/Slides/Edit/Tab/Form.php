@@ -14,6 +14,12 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
         $form = new Varien_Data_Form();
         $this->setForm($form);
         $fieldset = $form->addFieldset("slide_setting", array("legend" => Mage::helper("slides")->__("Primary settings")));
+        $canvasRecommendations = array(
+            'desktop' => '1152 x 352 px',
+            'tablet' => '948 x 454 px',
+            'mobile_large' => '480 x 912 px',
+            'mobile_small' => '274 x 520 px',
+        );
 
         $fieldset->addField('enabled', 'select', array(
             'label' => Mage::helper('slides')->__('Enable'),
@@ -31,6 +37,20 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
             "name" => "text",
         ));
 
+        $fieldset->addField("content_html", "textarea", array(
+            'name'     => 'content_html',
+            'label'    => Mage::helper('slides')->__('Slide Content HTML'),
+            'title'    => Mage::helper('slides')->__('Slide Content HTML'),
+            'required' => false,
+        ));
+
+        $fieldset->addField("content_css", "textarea", array(
+            'name'     => 'content_css',
+            'label'    => Mage::helper('slides')->__('Slide Content CSS'),
+            'title'    => Mage::helper('slides')->__('Slide Content CSS'),
+            'required' => false,
+        ));
+
         $fieldset->addField("url", "text", array(
             "label" => Mage::helper("slides")->__("Link"),
             "name" => "url",
@@ -45,13 +65,25 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
         $fieldset->addField('image', 'image', array(
             'label' => Mage::helper('slides')->__('Image'),
             'name' => 'image',
-            'note' => '(*.jpg, *.png, *.gif)',
+            'note' => Mage::helper('slides')->__('*.jpg, *.png, *.gif, Zalecany %s', $canvasRecommendations['desktop']),
+        ));
+
+        $fieldset->addField('image_tablet', 'image', array(
+            'label' => Mage::helper('slides')->__('Image (tablet)'),
+            'name' => 'image_tablet',
+            'note' => Mage::helper('slides')->__('Zalecany %s', $canvasRecommendations['tablet']),
         ));
 
         $fieldset->addField('image_mobile', 'image', array(
-            'label' => Mage::helper('slides')->__('Image (mobile)'),
+            'label' => Mage::helper('slides')->__('Image (mobile large)'),
             'name' => 'image_mobile',
-            'note' => Mage::helper('slides')->__('Possible replacement for mobiles'),
+            'note' => Mage::helper('slides')->__('Zalecany %s', $canvasRecommendations['mobile_large']),
+        ));
+
+        $fieldset->addField('image_mobile_small', 'image', array(
+            'label' => Mage::helper('slides')->__('Image (mobile small)'),
+            'name' => 'image_mobile_small',
+            'note' => Mage::helper('slides')->__('Zalecany %s', $canvasRecommendations['mobile_small']),
         ));
 
         $fieldset->addField('position', 'text', array(
@@ -60,9 +92,12 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
             'class' => 'validate-digits'
         ));
 
-        $data = Mage::getModel('slides/areas')->getCollection()->getData();
-        foreach ($data as $area) {
-            $areas[$area['id']] = $area['name'];
+        $areas = Mage::getModel('slides/areas')->toOptionArray();
+
+        if (!$areas) {
+            $areas = array(
+                '' => Mage::helper('slides')->__('No areas available')
+            );
         }
 
         if (!$this->getRequest()->getParam('category')) {

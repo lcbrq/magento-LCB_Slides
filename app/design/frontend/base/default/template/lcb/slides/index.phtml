@@ -1,0 +1,160 @@
+<?php $slides = $this->getSlides(); ?>
+
+<?php if (!count($slides)): ?>
+    <?php return; ?>
+<?php endif; ?>
+<?php $transitionTime = (int) $this->getTransitionTime(); ?>
+<?php
+$sliderClasses = array('lcb-slider');
+
+foreach ($slides as $slideForClass) {
+    if (strpos((string) $slideForClass->getContentHtml(), 'lcb-free-banner-root') !== false) {
+        $sliderClasses[] = 'has-free-banner-slides';
+        break;
+    }
+}
+?>
+<div class="<?php echo $this->escapeHtml(implode(' ', $sliderClasses)); ?>" id="lcb-slider-<?php echo $this->escapeHtml($this->getNameInLayout()); ?>"  data-transition-time="<?php echo $transitionTime ? $transitionTime : 4000; ?>">
+    <div class="slides">
+        <?php $slideIndex = 0; ?>
+        <?php foreach ($slides as $slide): ?>
+            <?php
+            $imageUrl = '';
+            $tabletImageUrl = '';
+            $mobileImageUrl = '';
+            $mobileSmallImageUrl = '';
+            $contentHtml = (string) $slide->getContentHtml();
+            $slideClasses = array('slide');
+            $hasFreeBannerContent = strpos($contentHtml, 'lcb-free-banner-root') !== false;
+
+            if ($slideIndex === 0) {
+                $slideClasses[] = 'is-active';
+            }
+
+            if ($hasFreeBannerContent) {
+                $slideClasses[] = 'has-free-banner-content';
+            }
+
+            $imageUrl = $this->getSlideMediaImageUrl($slide->getImage());
+
+            $tabletImage = '';
+
+            if ($slide->getData('tablet_image')) {
+                $tabletImage = $slide->getData('tablet_image');
+            } elseif ($slide->getData('image_tablet')) {
+                $tabletImage = $slide->getData('image_tablet');
+            } elseif ($slide->getTabletImage()) {
+                $tabletImage = $slide->getTabletImage();
+            }
+
+            if ($tabletImage) {
+                $tabletImageUrl = $this->getSlideMediaImageUrl($tabletImage);
+            }
+
+            if ($tabletImageUrl) {
+                $slideClasses[] = 'has-tablet-image';
+            }
+
+            $mobileImage = '';
+
+            if ($slide->getData('mobile_image')) {
+                $mobileImage = $slide->getData('mobile_image');
+            } elseif ($slide->getData('image_mobile')) {
+                $mobileImage = $slide->getData('image_mobile');
+            } elseif ($slide->getMobileImage()) {
+                $mobileImage = $slide->getMobileImage();
+            }
+
+            $mobileImageUrl = $this->getSlideMediaImageUrl($mobileImage);
+
+            $mobileSmallImage = '';
+
+            if ($slide->getData('mobile_small_image')) {
+                $mobileSmallImage = $slide->getData('mobile_small_image');
+            } elseif ($slide->getData('image_mobile_small')) {
+                $mobileSmallImage = $slide->getData('image_mobile_small');
+            } elseif ($slide->getMobileSmallImage()) {
+                $mobileSmallImage = $slide->getMobileSmallImage();
+            }
+
+            $mobileSmallImageUrl = $this->getSlideMediaImageUrl($mobileSmallImage);
+
+            $fallbackImageUrl = $imageUrl ? $imageUrl : ($tabletImageUrl ? $tabletImageUrl : ($mobileImageUrl ? $mobileImageUrl : $mobileSmallImageUrl));
+            $tabletSourceUrl = $tabletImageUrl ? $tabletImageUrl : $imageUrl;
+            $mobileLargeSourceUrl = $mobileImageUrl ? $mobileImageUrl : ($mobileSmallImageUrl ? $mobileSmallImageUrl : ($tabletImageUrl ? $tabletImageUrl : $imageUrl));
+            $mobileSmallSourceUrl = $mobileSmallImageUrl ? $mobileSmallImageUrl : ($mobileImageUrl ? $mobileImageUrl : ($tabletImageUrl ? $tabletImageUrl : $imageUrl));
+            ?>
+
+            <div class="<?php echo $this->escapeHtml(implode(' ', $slideClasses)); ?>">
+                <?php if ($fallbackImageUrl): ?>
+                    <picture>
+                        <?php if ($mobileSmallSourceUrl): ?>
+                            <source
+                                media="(max-width: 390px)"
+                                srcset="<?php echo $this->escapeUrl($mobileSmallSourceUrl); ?>"
+                            />
+                        <?php endif; ?>
+
+                        <?php if ($mobileLargeSourceUrl): ?>
+                            <source
+                                media="(min-width: 391px) and (max-width: 480px)"
+                                srcset="<?php echo $this->escapeUrl($mobileLargeSourceUrl); ?>"
+                            />
+                        <?php endif; ?>
+
+                        <?php if ($tabletSourceUrl): ?>
+                            <source
+                                media="(min-width: 481px) and (max-width: 1024px)"
+                                srcset="<?php echo $this->escapeUrl($tabletSourceUrl); ?>"
+                            />
+                        <?php endif; ?>
+
+                        <img
+                            src="<?php echo $this->escapeUrl($fallbackImageUrl); ?>"
+                            alt="<?php echo $this->escapeHtml($slide->getName()); ?>"
+                            class="slide-image"
+                        />
+                    </picture>
+                <?php endif; ?>
+
+                <?php $contentWrapperId = 'slide-content-html-' . (int) $slide->getId(); ?>
+
+                <?php if ($contentHtml): ?>
+                    <div class="slide-content-html" id="<?php echo $this->escapeHtml($contentWrapperId); ?>">
+                        <div class="visual-banner-wrapper">
+                            <div class="visual-banner-inner">
+                                <?php echo Mage::helper('slides/content')->sanitizeHtml($contentHtml); ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($slide->getContentCss()): ?>
+                    <style type="text/css">
+                        <?php
+                        echo Mage::helper('slides/content')->prepareScopedCss(
+                            $slide->getContentCss(),
+                            '#' . $contentWrapperId
+                        );
+                        ?>
+                    </style>
+                <?php endif; ?>
+            </div>
+
+            <?php $slideIndex++; ?>
+        <?php endforeach; ?>
+    </div>
+
+    <?php if (count($slides) > 1): ?>
+        <div class="dots">
+            <?php for ($dotIndex = 0; $dotIndex < count($slides); $dotIndex++): ?>
+                <button
+                    type="button"
+                    class="dot<?php if ($dotIndex === 0): ?> is-active<?php endif; ?>"
+                    data-slide-index="<?php echo (int) $dotIndex; ?>"
+                    aria-label="Przejdź do slajdu <?php echo (int) $dotIndex + 1; ?>"
+                ></button>
+            <?php endfor; ?>
+        </div>
+    <?php endif; ?>
+</div>
