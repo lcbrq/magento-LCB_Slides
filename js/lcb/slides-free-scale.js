@@ -1,7 +1,15 @@
 (function () {
+    var CURRENT_LAYOUT_VERSION = '2';
     var BASE_GRID_WIDTH = 1152;
-    var BASE_GRID_HEIGHT = 352;
+    var BASE_GRID_HEIGHT = 347;
     var RESIZE_OBSERVERS_STARTED = false;
+    // Kept only to project coordinates saved before the compact responsive grids.
+    var LEGACY_DEVICE_LAYOUTS = {
+        desktop: { width: 1152, height: 352 },
+        tablet: { width: 948, height: 454 },
+        mobileLarge: { width: 480, height: 912 },
+        mobileSmall: { width: 274, height: 520 }
+    };
     var DEVICE_LAYOUTS = {
         desktop: {
             key: 'desktop',
@@ -14,21 +22,21 @@
             key: 'tablet',
             attrKey: 'tablet',
             width: 948,
-            height: 454,
+            height: 474,
             maxWidth: 1024
         },
         mobileLarge: {
             key: 'mobileLarge',
             attrKey: 'mobile-large',
             width: 480,
-            height: 912,
+            height: 360,
             maxWidth: 480
         },
         mobileSmall: {
             key: 'mobileSmall',
             attrKey: 'mobile-small',
-            width: 274,
-            height: 520,
+            width: 390,
+            height: 293,
             maxWidth: 390
         }
     };
@@ -195,6 +203,14 @@
         return layer.getAttribute(getLayoutEditedAttributeName(deviceKey)) === '1';
     }
 
+    function isLayerHidden(layer, deviceKey) {
+        if (!layer || !layer.getAttribute || !DEVICE_LAYOUTS[deviceKey]) {
+            return false;
+        }
+
+        return layer.getAttribute('data-lcb-hidden-' + DEVICE_LAYOUTS[deviceKey].attrKey) === '1';
+    }
+
     function setLayerLayoutNumber(layer, deviceKey, propertyName, value) {
         if (!layer || !layer.setAttribute || !DEVICE_LAYOUTS[deviceKey]) {
             return;
@@ -203,16 +219,22 @@
         layer.setAttribute(getLayoutAttributeName(deviceKey, propertyName), normalizeNumber(value || 0));
     }
 
-    function getResponsiveDevice(availableWidth) {
-        if (availableWidth <= DEVICE_LAYOUTS.mobileSmall.maxWidth) {
+    function getViewportWidth() {
+        return window.innerWidth || document.documentElement.clientWidth || BASE_GRID_WIDTH;
+    }
+
+    function getResponsiveDevice() {
+        var viewportWidth = getViewportWidth();
+
+        if (viewportWidth <= DEVICE_LAYOUTS.mobileSmall.maxWidth) {
             return DEVICE_LAYOUTS.mobileSmall;
         }
 
-        if (availableWidth <= DEVICE_LAYOUTS.mobileLarge.maxWidth) {
+        if (viewportWidth <= DEVICE_LAYOUTS.mobileLarge.maxWidth) {
             return DEVICE_LAYOUTS.mobileLarge;
         }
 
-        if (availableWidth <= DEVICE_LAYOUTS.tablet.maxWidth) {
+        if (viewportWidth <= DEVICE_LAYOUTS.tablet.maxWidth) {
             return DEVICE_LAYOUTS.tablet;
         }
 
@@ -385,6 +407,76 @@
         return (basePosition / baseRange) * currentRange;
     }
 
+    function migrateLegacyLayerLayout(layer, deviceKey) {
+        var sourceLayout = LEGACY_DEVICE_LAYOUTS[deviceKey],
+            targetLayout = DEVICE_LAYOUTS[deviceKey],
+            width = getLayerLayoutNumber(layer, deviceKey, 'width'),
+            height = getLayerLayoutNumber(layer, deviceKey, 'height'),
+            left = getLayerLayoutNumber(layer, deviceKey, 'left'),
+            top = getLayerLayoutNumber(layer, deviceKey, 'top');
+
+        width = width === null ? (getComputedPixel(layer, 'width') || 0) : width;
+        height = height === null ? (getComputedPixel(layer, 'height') || 0) : height;
+
+        if (left !== null) {
+            left = projectPosition(left, sourceLayout.width, targetLayout.width, width, width);
+            setLayerLayoutNumber(layer, deviceKey, 'left', left);
+        }
+
+        if (top !== null) {
+            top = projectPosition(top, sourceLayout.height, targetLayout.height, height, height);
+            setLayerLayoutNumber(layer, deviceKey, 'top', top);
+        }
+
+        if (deviceKey !== 'desktop') {
+            return;
+        }
+
+        if (left === null) {
+            left = getComputedPixel(layer, 'left');
+
+            if (left !== null) {
+                left = projectPosition(left, sourceLayout.width, targetLayout.width, width, width);
+            }
+        }
+
+        if (top === null) {
+            top = getComputedPixel(layer, 'top');
+
+            if (top !== null) {
+                top = projectPosition(top, sourceLayout.height, targetLayout.height, height, height);
+            }
+        }
+
+        if (left !== null) {
+            setStyle(layer, 'left', normalizeNumber(left) + 'px');
+        }
+
+        if (top !== null) {
+            setStyle(layer, 'top', normalizeNumber(top) + 'px');
+        }
+    }
+
+    function migrateLegacyLayout(root, stage) {
+        var layers,
+            layerIndex,
+            deviceIndex;
+
+        if (!root || root.getAttribute('data-lcb-layout-version')) {
+            return;
+        }
+
+        layers = stage.querySelectorAll('.lcb-free-layer');
+
+        for (layerIndex = 0; layerIndex < layers.length; layerIndex++) {
+            for (deviceIndex = 0; deviceIndex < DEVICE_LAYOUT_ORDER.length; deviceIndex++) {
+                migrateLegacyLayerLayout(layers[layerIndex], DEVICE_LAYOUT_ORDER[deviceIndex]);
+            }
+        }
+
+        root.setAttribute('data-lcb-layout-version', CURRENT_LAYOUT_VERSION);
+    }
+
     function adaptLayer(layer, layout) {
         var baseLeft,
             baseTop;
@@ -455,11 +547,13 @@
             return;
         }
 
+        migrateLegacyLayout(root, stage);
+
         setStyle(root, 'width', '100%', 'important');
         setStyle(root, 'max-width', '100%', 'important');
 
         availableWidth = getAvailableWidth(root);
-        layout = getResponsiveDevice(availableWidth);
+        layout = getResponsiveDevice();
         visualScale = availableWidth / layout.width;
         visualHeight = layout.height * visualScale;
 
@@ -469,7 +563,9 @@
         layers = stage.querySelectorAll('.lcb-free-layer');
 
         for (i = 0; i < layers.length; i++) {
-            adaptLayer(layers[i], layout);
+            if (!isLayerHidden(layers[i], layout.key)) {
+                adaptLayer(layers[i], layout);
+            }
         }
 
         root.setAttribute('data-lcb-grid-name', layout.key);

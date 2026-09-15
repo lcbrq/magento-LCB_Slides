@@ -124,3 +124,27 @@
 .lcb-slider .lcb-free-copy-text {
     cursor: pointer;
 }
+
+@media (min-width: 1025px) {
+    .lcb-slider .lcb-free-layer[data-lcb-hidden-desktop="1"] {
+        display: none !important;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+    .lcb-slider .lcb-free-layer[data-lcb-hidden-tablet="1"] {
+        display: none !important;
+    }
+}
+
+@media (min-width: 391px) and (max-width: 480px) {
+    .lcb-slider .lcb-free-layer[data-lcb-hidden-mobile-large="1"] {
+        display: none !important;
+    }
+}
+
+@media (max-width: 390px) {
+    .lcb-slider .lcb-free-layer[data-lcb-hidden-mobile-small="1"] {
+        display: none !important;
+    }
+}

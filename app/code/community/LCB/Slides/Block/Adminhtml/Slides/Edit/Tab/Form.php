@@ -15,10 +15,10 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit_Tab_Form extends Mage_Adminhtml_Blo
         $this->setForm($form);
         $fieldset = $form->addFieldset("slide_setting", array("legend" => Mage::helper("slides")->__("Primary settings")));
         $canvasRecommendations = array(
-            'desktop' => '1152 x 352 px',
-            'tablet' => '948 x 454 px',
-            'mobile_large' => '480 x 912 px',
-            'mobile_small' => '274 x 520 px',
+            'desktop' => '1920 x 578 px',
+            'tablet' => '1600 x 800 px',
+            'mobile_large' => '800 x 600 px',
+            'mobile_small' => '800 x 600 px',
         );
 
         $fieldset->addField('enabled', 'select', array(

@@ -49,10 +49,33 @@ class LCB_Slides_Block_Adminhtml_Slides_FreeVisualEditor extends Mage_Adminhtml_
             $headBlock->addCss('lcb/grapesjs/visual-editor-free.css');
 
             $headBlock->addJs('lcb/grapesjs/grapes.min.js');
-            $headBlock->addJs('lcb/grapesjs/visual-editor-free.js');
+            $headBlock->addJs($this->_getVersionedJsPath('lcb/grapesjs/visual-editor-free.js'));
         }
 
         return parent::_prepareLayout();
+    }
+
+    /**
+     * Avoid serving an outdated editor after deploying a new module asset.
+     * Query strings are omitted when JavaScript merging is enabled because the
+     * merger expects physical file paths.
+     *
+     * @param string $relativePath
+     * @return string
+     */
+    protected function _getVersionedJsPath($relativePath)
+    {
+        if (Mage::getStoreConfigFlag('dev/js/merge_files')) {
+            return $relativePath;
+        }
+
+        $absolutePath = Mage::getBaseDir() . DS . 'js' . DS . str_replace('/', DS, $relativePath);
+
+        if (!is_file($absolutePath)) {
+            return $relativePath;
+        }
+
+        return $relativePath . '?v=' . filemtime($absolutePath);
     }
 
     /**

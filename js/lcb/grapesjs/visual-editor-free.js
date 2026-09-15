@@ -45,29 +45,37 @@ document.observe('dom:loaded', function () {
         return;
     }
 
+    var CURRENT_LAYOUT_VERSION = '2';
+    // Kept only to project coordinates saved before the compact responsive grids.
+    var legacyDeviceLayouts = {
+        desktop: { width: 1152, height: 352 },
+        tablet: { width: 948, height: 454 },
+        mobileLarge: { width: 480, height: 912 },
+        mobileSmall: { width: 274, height: 520 }
+    };
     var deviceLayouts = {
         desktop: {
             attrKey: 'desktop',
             width: 1152,
-            height: 352,
+            height: 347,
             maxWidth: null
         },
         tablet: {
             attrKey: 'tablet',
             width: 948,
-            height: 454,
+            height: 474,
             maxWidth: 1024
         },
         mobileLarge: {
             attrKey: 'mobile-large',
             width: 480,
-            height: 912,
+            height: 360,
             maxWidth: 480
         },
         mobileSmall: {
             attrKey: 'mobile-small',
-            width: 274,
-            height: 520,
+            width: 390,
+            height: 293,
             maxWidth: 390
         }
     };
@@ -571,8 +579,93 @@ document.observe('dom:loaded', function () {
         return wrapper.innerHTML;
     }
 
+    function getDomLayoutNumber(layer, deviceKey, propertyName) {
+        var value = layer.getAttribute(getLayoutAttributeName(deviceKey, propertyName));
+
+        value = parseFloat(value);
+
+        return isNaN(value) ? null : value;
+    }
+
+    function migrateLegacyDomLayerLayout(layer, deviceKey) {
+        var sourceGrid = legacyDeviceLayouts[deviceKey],
+            targetGrid = gridSizes[deviceKey],
+            width = getDomLayoutNumber(layer, deviceKey, 'width'),
+            height = getDomLayoutNumber(layer, deviceKey, 'height'),
+            left = getDomLayoutNumber(layer, deviceKey, 'left'),
+            top = getDomLayoutNumber(layer, deviceKey, 'top');
+
+        width = width === null ? (parseFloat(layer.style.width) || 0) : width;
+        height = height === null ? (parseFloat(layer.style.height) || 0) : height;
+
+        if (left !== null) {
+            left = projectLayoutPosition(left, sourceGrid.width, targetGrid.width, width, width);
+            layer.setAttribute(getLayoutAttributeName(deviceKey, 'left'), normalizeCssNumber(left));
+        }
+
+        if (top !== null) {
+            top = projectLayoutPosition(top, sourceGrid.height, targetGrid.height, height, height);
+            layer.setAttribute(getLayoutAttributeName(deviceKey, 'top'), normalizeCssNumber(top));
+        }
+
+        if (deviceKey !== 'desktop') {
+            return;
+        }
+
+        if (left === null && layer.style.left) {
+            left = parseFloat(layer.style.left);
+
+            if (!isNaN(left)) {
+                left = projectLayoutPosition(left, sourceGrid.width, targetGrid.width, width, width);
+            }
+        }
+
+        if (top === null && layer.style.top) {
+            top = parseFloat(layer.style.top);
+
+            if (!isNaN(top)) {
+                top = projectLayoutPosition(top, sourceGrid.height, targetGrid.height, height, height);
+            }
+        }
+
+        if (left !== null && !isNaN(left)) {
+            layer.style.left = normalizeCssNumber(left) + 'px';
+        }
+
+        if (top !== null && !isNaN(top)) {
+            layer.style.top = normalizeCssNumber(top) + 'px';
+        }
+    }
+
+    function migrateLegacyLayoutHtml(html) {
+        var wrapper = document.createElement('div'),
+            root,
+            layers,
+            deviceIndex,
+            layerIndex;
+
+        wrapper.innerHTML = cleanHtml(html || '');
+        root = wrapper.querySelector('.lcb-free-banner-root');
+
+        if (!root || root.getAttribute('data-lcb-layout-version')) {
+            return wrapper.innerHTML;
+        }
+
+        layers = root.querySelectorAll('.lcb-free-layer');
+
+        for (layerIndex = 0; layerIndex < layers.length; layerIndex++) {
+            for (deviceIndex = 0; deviceIndex < layoutDevices.length; deviceIndex++) {
+                migrateLegacyDomLayerLayout(layers[layerIndex], layoutDevices[deviceIndex]);
+            }
+        }
+
+        root.setAttribute('data-lcb-layout-version', CURRENT_LAYOUT_VERSION);
+
+        return wrapper.innerHTML;
+    }
+
     function getInitialFreeHtml() {
-        return '<section class="lcb-free-banner-root">' +
+        return '<section class="lcb-free-banner-root" data-lcb-layout-version="' + CURRENT_LAYOUT_VERSION + '">' +
             '<div class="lcb-free-banner-stage">' +
                 '<div data-gjs-type="lcb-free-heading" class="lcb-free-layer lcb-free-heading" style="left:465px;top:86px;position:absolute;">Nagłówek</div>' +
                 '<div data-gjs-type="lcb-free-text" class="lcb-free-layer lcb-free-text" style="left:516px;top:162px;position:absolute;">Tekst banera</div>' +
@@ -1065,6 +1158,49 @@ document.observe('dom:loaded', function () {
             hasClass(component, 'lcb-free-button');
     }
 
+    function getFreeLayerVisibilityTraits() {
+        var visibilityCategory = {
+            id: 'lcb-device-visibility',
+            label: 'Visibility by device',
+            open: true
+        };
+
+        return [
+            {
+                type: 'checkbox',
+                name: 'data-lcb-hidden-desktop',
+                label: 'Hide on desktop',
+                valueTrue: '1',
+                valueFalse: '0',
+                category: visibilityCategory
+            },
+            {
+                type: 'checkbox',
+                name: 'data-lcb-hidden-tablet',
+                label: 'Hide on tablet',
+                valueTrue: '1',
+                valueFalse: '0',
+                category: visibilityCategory
+            },
+            {
+                type: 'checkbox',
+                name: 'data-lcb-hidden-mobile-large',
+                label: 'Hide on mobile large',
+                valueTrue: '1',
+                valueFalse: '0',
+                category: visibilityCategory
+            },
+            {
+                type: 'checkbox',
+                name: 'data-lcb-hidden-mobile-small',
+                label: 'Hide on mobile small',
+                valueTrue: '1',
+                valueFalse: '0',
+                category: visibilityCategory
+            }
+        ];
+    }
+
     function addFreeLayerComponentType(editor) {
         editor.DomComponents.addType('lcb-free-layer', {
             isComponent: function (el) {
@@ -1094,7 +1230,8 @@ document.observe('dom:loaded', function () {
                     editable: false,
                     style: {
                         position: 'absolute'
-                    }
+                    },
+                    traits: getFreeLayerVisibilityTraits()
                 }
             }
         });
@@ -1393,7 +1530,7 @@ document.observe('dom:loaded', function () {
                             name: 'alt',
                             label: 'Alt'
                         }
-                    ]
+                    ].concat(getFreeLayerVisibilityTraits())
                 }
             }
         });
@@ -1414,7 +1551,8 @@ document.observe('dom:loaded', function () {
             textable: true,
             style: {
                 position: 'absolute'
-            }
+            },
+            traits: getFreeLayerVisibilityTraits()
         };
 
         if (className === 'lcb-free-button') {
@@ -1443,7 +1581,7 @@ document.observe('dom:loaded', function () {
                     name: 'title',
                     label: 'Title'
                 }
-            ];
+            ].concat(getFreeLayerVisibilityTraits());
         }
 
         editor.DomComponents.addType(type, {
@@ -1472,6 +1610,7 @@ document.observe('dom:loaded', function () {
 
     initialHtml = normalizeFreeBannerHtml(initialHtml);
     initialHtml = stripDefaultFreeStylesFromHtml(initialHtml);
+    initialHtml = migrateLegacyLayoutHtml(initialHtml);
     initialCss = stripDefaultFreeStylesFromCss(initialCss, function (id) {
         return getFreeElementKindByIdFromHtml(initialHtml, id);
     });
@@ -1498,7 +1637,12 @@ document.observe('dom:loaded', function () {
 
         '@media (max-width:1024px){.lcb-free-heading{font-size:42px;}.lcb-free-text{font-size:19px;}}',
         '@media (max-width:480px){.lcb-free-heading{font-size:34px;}.lcb-free-text{font-size:18px;}.lcb-free-button,.lcb-free-button:link,.lcb-free-button:visited,.lcb-free-button:hover,.lcb-free-button:focus,.lcb-free-button:active{padding:10px 16px;font-size:15px;}}',
-        '@media (max-width:390px){.lcb-free-heading{font-size:30px;}.lcb-free-text{font-size:16px;}}'
+        '@media (max-width:390px){.lcb-free-heading{font-size:30px;}.lcb-free-text{font-size:16px;}}',
+
+        '@media (min-width:1025px){.lcb-free-layer[data-lcb-hidden-desktop="1"]{display:none!important;}}',
+        '@media (min-width:481px) and (max-width:1024px){.lcb-free-layer[data-lcb-hidden-tablet="1"]{display:none!important;}}',
+        '@media (min-width:391px) and (max-width:480px){.lcb-free-layer[data-lcb-hidden-mobile-large="1"]{display:none!important;}}',
+        '@media (max-width:390px){.lcb-free-layer[data-lcb-hidden-mobile-small="1"]{display:none!important;}}'
     ];
 
     function freeBannerPlugin(editor) {
@@ -1616,6 +1760,23 @@ document.observe('dom:loaded', function () {
         }
     });
 
+    function configureVisibilityPanelButton() {
+        var button = editor.Panels && editor.Panels.getButton
+            ? editor.Panels.getButton('views', 'open-tm')
+            : null;
+
+        if (!button) {
+            return;
+        }
+
+        button.set('className', 'fa fa-eye');
+        button.set('attributes', {
+            title: 'Element settings and visibility'
+        });
+    }
+
+    configureVisibilityPanelButton();
+
     function enableFreeDragMode() {
         if (editor.setDragMode) {
             editor.setDragMode('absolute');
@@ -1682,6 +1843,23 @@ document.observe('dom:loaded', function () {
 
     function getLayoutEditedAttributeName(deviceKey) {
         return 'data-lcb-layout-' + layoutAttributeKeys[deviceKey] + '-edited';
+    }
+
+    function getVisibilityAttributeName(deviceKey) {
+        deviceKey = normalizeDeviceKey(deviceKey);
+
+        return 'data-lcb-hidden-' + layoutAttributeKeys[deviceKey];
+    }
+
+    function setLayerHiddenForDevice(layer, deviceKey, hidden) {
+        var attributes = {};
+
+        if (!layer || !hasClass(layer, 'lcb-free-layer')) {
+            return;
+        }
+
+        attributes[getVisibilityAttributeName(deviceKey)] = hidden ? '1' : '0';
+        setComponentAttributes(layer, attributes);
     }
 
     function escapeRegExp(value) {
@@ -3538,6 +3716,36 @@ document.observe('dom:loaded', function () {
     editor.on('component:selected', function () {
         syncSelectedStyleManagerComputedDefaultsSoon(0);
         syncSelectedStyleManagerComputedDefaultsSoon(80);
+    });
+
+    editor.on('component:remove:before', function (component, removeComponent, options) {
+        options = options || {};
+
+        if (
+            isNormalizing ||
+            isEditorBooting ||
+            currentDeviceKey === 'desktop' ||
+            !component ||
+            !hasClass(component, 'lcb-free-layer')
+        ) {
+            return;
+        }
+
+        if (options.action && options.action !== 'component:remove') {
+            return;
+        }
+
+        options.abort = true;
+        setLayerHiddenForDevice(component, currentDeviceKey, true);
+
+        if (editor.select) {
+            editor.select(component);
+        }
+
+        window.setTimeout(function () {
+            updateEditorDevicePreviewFrame();
+            syncSelectedStyleManagerComputedDefaults();
+        }, 0);
     });
 
     editor.on('component:add', function (component) {
