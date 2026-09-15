@@ -9,6 +9,11 @@
  */
 class LCB_Slides_Adminhtml_SlidesController extends Mage_Adminhtml_Controller_Action
 {
+    /**
+     * @inheritDoc
+     */
+    public const ADMIN_RESOURCE = 'cms/slides/slides';
+
     protected function _initAction()
     {
         $this->loadLayout()->_setActiveMenu("slides/slides")->_addBreadcrumb(Mage::helper("adminhtml")->__("Slides  Manager"), Mage::helper("adminhtml")->__("Slides Manager"));

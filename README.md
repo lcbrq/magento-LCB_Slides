@@ -17,6 +17,8 @@ $slides = Mage::getModel('slides/slides')->getCollection()
 
 ### Changelog
 
+*1.6.3* Implement proper ACL permissions for slides management
+
 *1.6.2* Adjustments for OpenMage 20.17.0
 
 *1.6.1* Add event/object prefix to slides collection
