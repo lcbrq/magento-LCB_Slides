@@ -1,9 +1,49 @@
 <?xml version="1.0"?>
 <adminhtml>
+    <menu>
+        <cms>
+            <children>
+                <slides module="slides">
+                    <title>Slides</title>
+                    <sort_order>100</sort_order>
+                    <children>
+                        <slides module="slides">
+                            <title>Manage Slides</title>
+                            <sort_order>0</sort_order>
+                            <action>admin_slides/adminhtml_slides</action>
+                        </slides>
+                        <areas module="slides">
+                            <title>Manage Areas</title>
+                            <sort_order>10</sort_order>
+                            <action>admin_slides/adminhtml_areas</action>
+                        </areas>
+                    </children>
+                </slides>
+            </children>
+        </cms>
+    </menu>
     <acl>
         <resources>
             <admin>
                 <children>
+                    <cms>
+                        <children>
+                            <slides translate="title" module="slides">
+                                <title>Slides</title>
+                                <sort_order>1000</sort_order>
+                                <children>
+                                    <slides translate="title">
+                                        <title>Manage Slides</title>
+                                        <sort_order>0</sort_order>
+                                    </slides>
+                                    <areas translate="title">
+                                        <title>Manage Areas</title>
+                                        <sort_order>10</sort_order>
+                                    </areas>
+                                </children>
+                            </slides>
+                        </children>
+                    </cms>
                     <system>
                         <children>
                             <config>
