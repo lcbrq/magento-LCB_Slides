@@ -460,12 +460,13 @@ document.observe('dom:loaded', function () {
         return result;
     }
 
-    function normalizeFreeBannerHtml(html) {
+    function normalizeFreeBannerHtml(html, editorMode) {
         var wrapper,
             root,
             stage,
             rootChildren,
             buttons,
+            buttonTagName,
             replacement,
             attribute,
             buttonUrl,
@@ -515,12 +516,14 @@ document.observe('dom:loaded', function () {
         }
 
         buttons = root.querySelectorAll('.lcb-free-button');
+        buttonTagName = editorMode ? 'div' : 'a';
 
         for (i = 0; i < buttons.length; i++) {
             replacement = buttons[i];
+            buttonUrl = replacement.getAttribute('href') || replacement.getAttribute('data-lcb-button-url') || '#';
 
-            if (buttons[i].tagName.toLowerCase() !== 'a') {
-                replacement = document.createElement('a');
+            if (buttons[i].tagName.toLowerCase() !== buttonTagName) {
+                replacement = document.createElement(buttonTagName);
 
                 while (buttons[i].firstChild) {
                     replacement.appendChild(buttons[i].firstChild);
@@ -536,9 +539,14 @@ document.observe('dom:loaded', function () {
                 buttons[i].parentNode.replaceChild(replacement, buttons[i]);
             }
 
-            buttonUrl = replacement.getAttribute('href') || replacement.getAttribute('data-lcb-button-url') || '#';
+            if (editorMode) {
+                replacement.removeAttribute('href');
+                replacement.setAttribute('data-lcb-button-url', buttonUrl);
+            } else {
+                replacement.setAttribute('href', buttonUrl);
+                replacement.removeAttribute('data-lcb-button-url');
+            }
 
-            replacement.setAttribute('href', buttonUrl);
             replacement.setAttribute('data-gjs-type', 'lcb-free-button');
         }
 
@@ -669,7 +677,7 @@ document.observe('dom:loaded', function () {
             '<div class="lcb-free-banner-stage">' +
                 '<div data-gjs-type="lcb-free-heading" class="lcb-free-layer lcb-free-heading" style="left:465px;top:86px;position:absolute;">Nagłówek</div>' +
                 '<div data-gjs-type="lcb-free-text" class="lcb-free-layer lcb-free-text" style="left:516px;top:162px;position:absolute;">Tekst banera</div>' +
-                '<a data-gjs-type="lcb-free-button" href="#" class="lcb-free-layer lcb-free-button" style="left:526px;top:212px;position:absolute;">Button</a>' +
+                '<div data-gjs-type="lcb-free-button" data-lcb-button-url="#" class="lcb-free-layer lcb-free-button" style="left:526px;top:212px;position:absolute;">Button</div>' +
             '</div>' +
         '</section>';
     }
@@ -1556,14 +1564,14 @@ document.observe('dom:loaded', function () {
         };
 
         if (className === 'lcb-free-button') {
-            defaults.tagName = 'a';
+            defaults.tagName = 'div';
             defaults.attributes = {
-                href: '#'
+                'data-lcb-button-url': '#'
             };
             defaults.traits = [
                 {
                     type: 'text',
-                    name: 'href',
+                    name: 'data-lcb-button-url',
                     label: 'URL',
                     placeholder: 'https://example.com'
                 },
@@ -1608,7 +1616,7 @@ document.observe('dom:loaded', function () {
         initialHtml = getInitialFreeHtml();
     }
 
-    initialHtml = normalizeFreeBannerHtml(initialHtml);
+    initialHtml = normalizeFreeBannerHtml(initialHtml, true);
     initialHtml = stripDefaultFreeStylesFromHtml(initialHtml);
     initialHtml = migrateLegacyLayoutHtml(initialHtml);
     initialCss = stripDefaultFreeStylesFromCss(initialCss, function (id) {
@@ -1632,7 +1640,6 @@ document.observe('dom:loaded', function () {
         '.lcb-free-copy-text{cursor:pointer;}',
 
         '.lcb-free-button,.lcb-free-button:link,.lcb-free-button:visited,.lcb-free-button:hover,.lcb-free-button:focus,.lcb-free-button:active{display:inline-flex;align-items:center;justify-content:center;padding:12px 22px;border-radius:999px;background:#111;color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:700;line-height:1.2;text-align:center;text-decoration:none;white-space:normal;box-sizing:border-box;}',
-
         '.lcb-free-image{display:block;max-width:100%;height:auto;}',
 
         '@media (max-width:1024px){.lcb-free-heading{font-size:42px;}.lcb-free-text{font-size:19px;}}',
@@ -1749,7 +1756,7 @@ document.observe('dom:loaded', function () {
                 {
                     id: 'lcb-free-button',
                     label: 'Free Button',
-                    content: '<a data-gjs-type="lcb-free-button" href="#" class="lcb-free-layer lcb-free-button" style="left:120px;top:220px;position:absolute;">Button</a>'
+                    content: '<div data-gjs-type="lcb-free-button" data-lcb-button-url="#" class="lcb-free-layer lcb-free-button" style="left:120px;top:220px;position:absolute;">Button</div>'
                 },
                 {
                     id: 'lcb-free-image',
@@ -3901,7 +3908,7 @@ document.observe('dom:loaded', function () {
                 clearEditorBackgroundPreviewFromCanvasDom();
                 syncFreeImageSourcesForSave();
 
-                savedHtml = normalizeFreeBannerHtml(cleanHtml(editor.getHtml()));
+                savedHtml = normalizeFreeBannerHtml(cleanHtml(editor.getHtml()), false);
                 savedHtml = stripDefaultFreeStylesFromHtml(savedHtml);
                 savedCss = stripDefaultFreeStylesFromCss(editor.getCss(), getFreeElementKindByCurrentComponentId);
 
