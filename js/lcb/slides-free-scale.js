@@ -621,6 +621,20 @@
         document.body.removeChild(textarea);
     }
 
+    function showCopyFeedback(event) {
+        var feedback = document.createElement('span');
+
+        feedback.textContent = 'Skopiowano';
+        feedback.style.cssText = 'position:fixed;left:' + event.clientX + 'px;top:' + (event.clientY - 8) +
+            'px;z-index:99999;padding:4px 8px;border-radius:4px;background:#111;color:#fff;' +
+            'font:12px Arial,sans-serif;transform:translate(-50%,-100%);pointer-events:none;';
+        document.body.appendChild(feedback);
+
+        window.setTimeout(function () {
+            document.body.removeChild(feedback);
+        }, 900);
+    }
+
     function copyText(value) {
         if (window.navigator && navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(value).then(null, function () {
@@ -645,6 +659,7 @@
 
         if (value) {
             copyText(value);
+            showCopyFeedback(currentEvent);
         }
     }
 
