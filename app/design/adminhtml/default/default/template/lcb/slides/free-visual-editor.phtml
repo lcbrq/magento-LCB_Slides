@@ -1,0 +1,54 @@
+<?php $slide = $this->getSlide(); ?>
+
+<div class="content-header">
+    <h3>
+        <?php echo Mage::helper('slides')->__('Free Visual Editor'); ?>
+        <?php if ($slide): ?>
+            - <?php echo $this->escapeHtml($slide->getName()); ?>
+        <?php endif; ?>
+    </h3>
+</div>
+
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4><?php echo Mage::helper('slides')->__('Free Visual Editor Workspace'); ?></h4>
+    </div>
+
+    <div class="fieldset">
+        <div class="hor-scroll">
+            <div class="lcb-free-editor-actions">
+                <button
+                    type="button"
+                    id="lcb-free-grapes-back-button"
+                    class="scalable back"
+                    data-back-url="<?php echo $this->escapeHtml($this->getBackUrl()); ?>"
+                >
+                    <span><?php echo Mage::helper('slides')->__('Back to Slide'); ?></span>
+                </button>
+                <button type="button" id="lcb-free-grapes-save-button" class="scalable save">
+                    <span><?php echo Mage::helper('slides')->__('Save Visual Editor'); ?></span>
+                </button>
+                <button type="button" id="lcb-free-grapes-save-continue-button" class="scalable save">
+                    <span><?php echo Mage::helper('slides')->__('Save and Continue Editing'); ?></span>
+                </button>
+            </div>
+
+            <form id="lcb-free-grapes-save-form" action="<?php echo $this->getSaveVisualContentUrl(); ?>" method="post">
+                <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+                <input type="hidden" name="id" value="<?php echo $slide->getId(); ?>" />
+                <input type="hidden" name="back" id="lcb-free-grapes-back" value="" />
+                <input type="hidden" name="content_html" id="lcb-free-grapes-html" value="" />
+                <input type="hidden" name="content_css" id="lcb-free-grapes-css" value="" />
+                <input type="hidden" id="lcb-free-grapes-initial-html" value="<?php echo $this->escapeHtml($this->getSlideContentHtml()); ?>" />
+                <input type="hidden" id="lcb-free-grapes-initial-css" value="<?php echo $this->escapeHtml($this->getSlideContentCss()); ?>" />
+                <input type="hidden" id="lcb-free-grapes-image-url" value="<?php echo $this->escapeHtml($this->getSlideImageUrl()); ?>" />
+                <input type="hidden" id="lcb-free-grapes-tablet-image-url" value="<?php echo $this->escapeHtml($this->getSlideTabletImageUrl()); ?>" />
+                <input type="hidden" id="lcb-free-grapes-mobile-image-url" value="<?php echo $this->escapeHtml($this->getSlideMobileImageUrl()); ?>" />
+                <input type="hidden" id="lcb-free-grapes-mobile-small-image-url" value="<?php echo $this->escapeHtml($this->getSlideMobileSmallImageUrl()); ?>" />
+                <input type="hidden" id="lcb-free-grapes-free-image-upload-url" value="<?php echo $this->escapeHtml($this->getUploadFreeImageUrl()); ?>" />
+            </form>
+
+            <div id="lcb-free-grapes-editor" class="lcb-free-grapes-editor"></div>
+        </div>
+    </div>
+</div>

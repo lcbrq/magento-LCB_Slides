@@ -12,7 +12,9 @@
 "In miliseconds e.g. 1s = 1000","W milisekundach, 1s = 1000"
 "Define New Area", "Zdefiniuj nowy obszar"
 "Image","Obraz"
-"Image (mobile)","Obraz (na telefony")
+"Image (tablet)","Obraz (tablet)",
+"Image (mobile large)","Obraz (duży telefon)",
+"Image (mobile small)","Obraz (mały telefon)",
 "Possible replacement for mobiles","Możliwy zamiennik dla urządzeń mobilnych"
 "Enable slides management for products","Włącz zarządzanie sliderami dla produktów"
 "Default Area","Obszar domyślny"

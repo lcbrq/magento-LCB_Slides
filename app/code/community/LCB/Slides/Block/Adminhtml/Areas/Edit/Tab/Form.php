@@ -30,6 +30,12 @@ class LCB_Slides_Block_Adminhtml_Areas_Edit_Tab_Form extends Mage_Adminhtml_Bloc
             "name" => "position",
         ));
 
+        $fieldset->addField("transition_time", "text", array(
+            'label' => Mage::helper('slides')->__('Transition time'),
+            'name'  => 'transition_time',
+            'note'  => Mage::helper('slides')->__('In milliseconds, e.g. 1s = 1000'),
+        ));
+
 
         if (Mage::getSingleton("adminhtml/session")->getAreasData()) {
             $form->setValues(Mage::getSingleton("adminhtml/session")->getAreasData());

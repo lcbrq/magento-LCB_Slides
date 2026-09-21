@@ -18,6 +18,18 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit extends Mage_Adminhtml_Block_Widget
         $this->_updateButton("save", "label", Mage::helper("slides")->__("Save"));
         $this->_updateButton("delete", "label", Mage::helper("slides")->__("Delete"));
 
+        if ($this->getRequest()->getParam('id')) {
+            $this->_addButton(
+                'open_visual_editor',
+                array(
+                    'label'   => Mage::helper('slides')->__('Open Visual Editor'),
+                    'onclick' => 'setLocation(\'' . $this->getFreeVisualEditorUrl() . '\')',
+                    'class'   => 'go',
+                ),
+                20
+            );
+        }
+
         $this->_addButton("saveandcontinue", array(
             "label" => Mage::helper("slides")->__("Save And Continue Edit"),
             "onclick" => "saveAndContinueEdit()",
@@ -51,5 +63,13 @@ class LCB_Slides_Block_Adminhtml_Slides_Edit extends Mage_Adminhtml_Block_Widget
         } else {
             return $this->getUrl('*/*/');
         }
+    }
+
+    public function getFreeVisualEditorUrl()
+    {
+        return $this->getUrl(
+            '*/adminhtml_slides/freeVisualEditor',
+            array('id' => $this->getRequest()->getParam('id'))
+        );
     }
 }
