@@ -587,13 +587,13 @@
         }
     }
 
-    function findCopyTextElement(node) {
-        var className;
+    function findElementWithClass(node, className) {
+        var nodeClassName;
 
         while (node && node !== document) {
-            className = node.nodeType === 1 && node.getAttribute ? node.getAttribute('class') : '';
+            nodeClassName = node.nodeType === 1 && node.getAttribute ? node.getAttribute('class') : '';
 
-            if ((' ' + (className || '') + ' ').indexOf(' lcb-free-copy-text ') !== -1) {
+            if ((' ' + (nodeClassName || '') + ' ').indexOf(' ' + className + ' ') !== -1) {
                 return node;
             }
 
@@ -648,7 +648,7 @@
 
     function handleCopyText(event) {
         var currentEvent = event || window.event,
-            element = findCopyTextElement(currentEvent.target || currentEvent.srcElement),
+            element = findElementWithClass(currentEvent.target || currentEvent.srcElement, 'lcb-free-copy-text'),
             value;
 
         if (!element) {
@@ -660,6 +660,31 @@
         if (value) {
             copyText(value);
             showCopyFeedback(currentEvent);
+        }
+    }
+
+    function handleHiddenButtonSlideLink(event) {
+        var currentEvent = event || window.event,
+            target = currentEvent.target || currentEvent.srcElement,
+            root = findElementWithClass(target, 'lcb-free-banner-root'),
+            hiddenAttribute = 'data-lcb-hidden-' + getResponsiveDevice().attrKey,
+            hiddenButton;
+
+        if (!root || findElementWithClass(target, 'lcb-free-button') ||
+            findElementWithClass(target, 'lcb-free-copy-text')) {
+            return;
+        }
+
+        if (root.querySelector('.lcb-free-button:not([' + hiddenAttribute + '="1"])')) {
+            return;
+        }
+
+        hiddenButton = root.querySelector(
+            '.lcb-free-button[' + hiddenAttribute + '="1"][href]:not([href=""]):not([href="#"])'
+        );
+
+        if (hiddenButton) {
+            hiddenButton.click();
         }
     }
 
@@ -717,9 +742,11 @@
         window.addEventListener('resize', runScale);
         window.addEventListener('orientationchange', runScale);
         document.addEventListener('click', handleCopyText);
+        document.addEventListener('click', handleHiddenButtonSlideLink);
     } else if (window.attachEvent) {
         window.attachEvent('onload', runScale);
         window.attachEvent('onresize', runScale);
         document.attachEvent('onclick', handleCopyText);
+        document.attachEvent('onclick', handleHiddenButtonSlideLink);
     }
 })();
